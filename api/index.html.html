@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria-pedagog AI · Powered by Gemma — BAC Română L2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+:root{
+  --navy:#1a2744; --navy-light:#2a3a5e;
+  --cream:#f5f0e8; --cream-dark:#ebe3d4;
+  --gold:#c9a24a; --gold-dark:#a07c30;
+  --text-dark:#1a1a2e; --text-light:#f5f0e8;
+  --correct:#2d6a4f; --correct-bg:#e8f3ec;
+  --incorrect:#c1121f; --incorrect-bg:#fbe7e9;
+  --muted:#6b6b7a; --border:#d8d0bf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--cream);color:var(--text-dark);line-height:1.65;font-size:16px}
+
+/* ── HEADER ── */
+header{background:var(--navy);color:var(--cream);padding:32px 24px 28px;text-align:center;border-bottom:3px solid var(--gold)}
+header h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(20px,3vw,30px);margin-bottom:6px}
+header .subtitle{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:clamp(13px,1.8vw,17px);margin-bottom:4px}
+header .meta{font-size:12.5px;color:var(--cream-dark);opacity:.82;margin-top:6px}
+.robot-wrap{display:inline-flex;align-items:center;justify-content:center;color:var(--cream)}
+.header-links{margin-top:10px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px}
+.hlink{color:var(--gold);font-size:12.5px;text-decoration:none;padding:3px 9px;border:1px solid rgba(201,162,74,.4);border-radius:12px;transition:all .2s;white-space:nowrap}
+.hlink:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.hlink-sep{color:var(--cream-dark);opacity:.4;font-size:12px}
+
+/* ── CONTAINER ── */
+.container{max-width:1100px;margin:0 auto;padding:22px 18px 90px}
+
+/* ── ALGORITM ── */
+.algoritm{background:white;border:2px solid var(--gold);border-radius:6px;padding:16px 20px;margin:20px 0;box-shadow:0 2px 8px rgba(26,39,68,.06)}
+.algoritm h2{font-family:'Playfair Display',serif;color:var(--navy);font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.algoritm h2::before{content:"";display:inline-block;width:5px;height:17px;background:var(--gold)}
+.algoritm li{padding:3px 0 3px 20px;position:relative;font-size:14px}
+.algoritm li::before{content:"◆";position:absolute;left:0;color:var(--gold);font-size:10px;top:7px}
+.algoritm ul{list-style:none}
+.algoritm strong{color:var(--navy)}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin:26px 0 0;border-bottom:2px solid var(--navy)}
+.tab-btn{flex:1;min-width:120px;padding:13px 10px;background:var(--navy-light);color:var(--cream);border:none;border-top-left-radius:5px;border-top-right-radius:5px;font-family:'Playfair Display',serif;font-size:13.5px;font-weight:700;cursor:pointer;transition:all .2s;opacity:.7}
+.tab-btn:hover{opacity:.95;background:var(--navy)}
+.tab-btn.active{background:var(--gold);color:var(--navy);opacity:1;box-shadow:0 -2px 8px rgba(201,162,74,.3)}
+.tab-btn .puncte{display:block;font-size:10.5px;font-family:'Source Sans 3',sans-serif;font-weight:400;font-style:italic;margin-top:2px;opacity:.85}
+
+/* ── TAB CONTENT ── */
+.tab-content{display:none;background:white;padding:28px 26px;border:2px solid var(--navy);border-top:none;border-bottom-left-radius:6px;border-bottom-right-radius:6px;animation:fadeIn .3s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.subiect-titlu{font-family:'Playfair Display',serif;color:var(--navy);font-size:24px;margin-bottom:6px;border-bottom:2px solid var(--gold);padding-bottom:8px}
+.puncte-total{display:inline-block;background:var(--navy);color:var(--cream);padding:3px 10px;border-radius:3px;font-size:12.5px;font-weight:600;margin-bottom:16px}
+
+/* ── TEXT SOURCE ── */
+.text-source{background:var(--cream);border-left:4px solid var(--gold);padding:18px 22px;margin:18px 0;border-radius:4px;font-size:14.5px;line-height:1.75}
+.text-source h3{font-family:'Playfair Display',serif;font-style:italic;color:var(--navy);font-size:13.5px;font-weight:400;margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase}
+.text-source p{margin-bottom:10px}
+.titlu-articol{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:16px;margin:12px 0 6px;display:block}
+.sursa{font-size:12.5px;font-style:italic;color:var(--muted);text-align:right;margin-top:12px;border-top:1px solid var(--border);padding-top:8px}
+
+/* ── VOCABULAR / SUGESTII ── */
+details.vocabular,details.sugestii{background:#fdfbf6;border:1px dashed var(--gold-dark);border-radius:4px;margin:14px 0;overflow:hidden}
+details.vocabular summary,details.sugestii summary{padding:10px 16px;cursor:pointer;font-family:'Playfair Display',serif;font-weight:700;color:var(--gold-dark);font-size:13.5px;list-style:none;user-select:none;display:flex;align-items:center;gap:8px}
+details.vocabular summary::before,details.sugestii summary::before{content:"▸";transition:transform .2s;font-size:12px}
+details[open] summary::before{transform:rotate(90deg)}
+details.vocabular summary::-webkit-details-marker,details.sugestii summary::-webkit-details-marker{display:none}
+.voc-content{padding:4px 16px 14px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 14px}
+dt{font-weight:700;color:var(--navy);font-style:italic}
+dd{color:var(--text-dark)}
+.sug-content{padding:4px 18px 14px;font-size:13.5px}
+.sug-content ol{margin-left:20px}
+.sug-content li{margin:4px 0}
+.sug-content em{color:var(--navy);font-weight:600}
+
+/* ── CERINTE ── */
+.cerinta{background:white;border:1px solid var(--border);border-left:3px solid var(--navy);border-radius:4px;padding:16px 20px;margin:16px 0}
+.cerinta-titlu{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:15.5px;margin-bottom:4px}
+.cerinta-puncte{display:inline-block;font-size:12px;color:var(--gold-dark);font-weight:600;margin-left:8px}
+.cerinta-instructiune{font-size:14px;color:var(--text-dark);margin:6px 0 12px}
+
+/* ── INPUTS ── */
+.optiuni{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.optiuni label{display:flex;align-items:flex-start;gap:9px;padding:7px 11px;border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all .15s;font-size:14.5px}
+.optiuni label:hover{background:var(--cream);border-color:var(--gold)}
+.optiuni input[type="radio"]{margin-top:4px;cursor:pointer;accent-color:var(--navy)}
+
+.tf-list{display:flex;flex-direction:column;gap:9px;margin:8px 0}
+.tf-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:9px 13px;border:1px solid var(--border);border-radius:4px}
+.tf-item-text{font-size:14px}
+.tf-controls{display:flex;gap:5px}
+.tf-controls label{display:flex;align-items:center;gap:4px;padding:4px 9px;border:1px solid var(--border);border-radius:3px;cursor:pointer;font-size:12.5px;background:var(--cream);font-weight:600}
+.tf-controls input[type="radio"]{accent-color:var(--navy)}
+
+.matching-list{display:flex;flex-direction:column;gap:9px;margin:8px 0}
+.matching-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:7px 11px;border:1px solid var(--border);border-radius:4px;font-size:14px}
+.matching-row .nr{font-weight:700;color:var(--navy);font-family:'Playfair Display',serif}
+.matching-row select{padding:5px 9px;border:1px solid var(--navy-light);border-radius:3px;background:white;font-family:'Source Sans 3',sans-serif;font-size:13.5px;cursor:pointer}
+
+.optiuni-fragmente{background:#fdfbf6;border:1px dashed var(--border);border-radius:4px;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.optiuni-fragmente p{margin:3px 0}
+.optiuni-fragmente strong{color:var(--navy)}
+
+.fill-in{display:inline-block;border:none;border-bottom:2px solid var(--navy);background:transparent;font-family:'Source Sans 3',sans-serif;font-size:14.5px;padding:2px 5px;min-width:110px;color:var(--navy);font-weight:600}
+.fill-in:focus{outline:none;border-bottom-color:var(--gold);background:#fef9ee}
+.fill-text{background:var(--cream);border-radius:4px;padding:12px 16px;font-size:14.5px;line-height:2.1;margin:10px 0}
+
+textarea.deschis{width:100%;min-height:120px;padding:11px 13px;border:1px solid var(--border);border-radius:4px;font-family:'Source Sans 3',sans-serif;font-size:14.5px;line-height:1.65;resize:vertical;background:#fdfdfb;color:var(--text-dark)}
+textarea.deschis:focus{outline:none;border-color:var(--gold);background:white;box-shadow:0 0 0 3px rgba(201,162,74,.15)}
+textarea.eseu{min-height:320px}
+textarea.argumentativ{min-height:190px}
+
+.word-count{font-size:12px;color:var(--muted);text-align:right;margin-top:3px;font-style:italic}
+.word-count.below{color:var(--incorrect);font-weight:600;font-style:normal}
+.word-count.met{color:var(--correct);font-weight:600;font-style:normal}
+
+/* ── BUTTONS ── */
+.btn{background:var(--gold);color:var(--navy);border:none;padding:10px 20px;font-family:'Playfair Display',serif;font-weight:700;font-size:13.5px;letter-spacing:.5px;border-radius:4px;cursor:pointer;transition:all .2s;margin:7px 5px 7px 0;box-shadow:0 2px 4px rgba(160,124,48,.2)}
+.btn:hover{background:var(--gold-dark);color:white;transform:translateY(-1px)}
+.btn-secondary{background:white;color:var(--navy);border:2px solid var(--navy);box-shadow:none}
+.btn-secondary:hover{background:var(--navy);color:var(--cream)}
+
+.btn-pdf-fix{position:fixed;bottom:22px;right:22px;z-index:100;border-radius:28px;padding:12px 20px;background:var(--navy);color:var(--cream);border:2px solid var(--gold);box-shadow:0 4px 14px rgba(26,39,68,.35);font-size:13px;font-family:'Playfair Display',serif;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-pdf-fix:hover{background:var(--gold);color:var(--navy)}
+
+/* ── REZULTAT / BAREM ── */
+.rezultat-subiect{margin-top:18px;padding:16px 20px;border-radius:5px;border:2px solid var(--navy);background:var(--cream);display:none}
+.rezultat-subiect.afisat{display:block}
+.rezultat-subiect h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:17px;margin-bottom:8px}
+.scor-bar{display:flex;align-items:baseline;gap:8px;font-family:'Playfair Display',serif;margin:6px 0 12px}
+.scor-mare{font-size:34px;font-weight:700;color:var(--navy)}
+.scor-mic{font-size:17px;color:var(--muted)}
+.item-rezultat{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13.5px}
+.item-rezultat .icon{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:white;flex-shrink:0}
+.item-rezultat.corect .icon{background:var(--correct)}
+.item-rezultat.gresit .icon{background:var(--incorrect)}
+.item-rezultat .nume{font-weight:600;min-width:50px}
+.raspuns-elev-mini{color:var(--muted)}
+.raspuns-corect-mini{color:var(--correct);font-weight:600}
+
+.barem-panel{background:#fef9ee;border:2px solid var(--gold);border-radius:5px;padding:18px 20px;margin:16px 0;display:none}
+.barem-panel.afisat{display:block}
+.barem-panel h3{font-family:'Playfair Display',serif;color:var(--gold-dark);font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.barem-panel h3::before{content:"⚖";font-size:18px}
+.barem-panel h4{font-family:'Playfair Display',serif;color:var(--navy);font-size:13.5px;margin:9px 0 4px}
+.barem-panel ul{margin-left:20px;font-size:13.5px}
+.barem-panel li{margin:3px 0}
+.punctaj{display:inline-block;background:var(--gold);color:var(--navy);padding:1px 7px;border-radius:3px;font-size:11.5px;font-weight:700;margin-left:5px}
+.criteriu{background:white;border-left:3px solid var(--gold);padding:9px 13px;margin:7px 0;border-radius:3px}
+
+/* ── EVALUARE FINALĂ ── */
+.evaluare-final{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.eval-card{background:var(--cream);border:1px solid var(--border);border-radius:5px;padding:14px 16px}
+.eval-card h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:14.5px;margin-bottom:7px}
+.scor-eval{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy)}
+.scor-eval .max{font-size:14px;color:var(--muted);font-weight:400}
+.eval-card input[type="number"]{width:75px;padding:5px 9px;border:1px solid var(--navy);border-radius:3px;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;text-align:center;color:var(--navy)}
+
+.total-final-box{background:var(--navy);color:var(--cream);border-radius:6px;padding:22px 26px;margin:22px 0;text-align:center;border:3px solid var(--gold)}
+.total-final-box h3{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:8px;letter-spacing:.5px}
+.total-mare{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--gold);line-height:1}
+.total-mare .max{font-size:22px;color:var(--cream);opacity:.7;font-weight:400}
+.nota-finala{margin-top:12px;font-size:18px}
+.nota-finala strong{font-family:'Playfair Display',serif;font-size:30px;color:var(--gold);margin-left:7px}
+.mesaj{margin-top:10px;font-style:italic;font-size:14px;font-family:'Playfair Display',serif;color:var(--cream-dark)}
+
+.tabel-final{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.tabel-final th,.tabel-final td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--border)}
+.tabel-final th{background:var(--navy);color:var(--cream);font-family:'Playfair Display',serif;font-weight:700;font-size:12.5px;letter-spacing:.3px}
+.tabel-final tbody tr:nth-child(even){background:var(--cream)}
+.tabel-final .scor-cell{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:14.5px;text-align:center}
+.tabel-final tfoot td{background:var(--gold);color:var(--navy);font-weight:700;font-family:'Playfair Display',serif;font-size:15px;border-top:2px solid var(--navy)}
+
+/* ── CASETA CORECTURĂ MARIA (tab 5) ── */
+.maria-intro{background:var(--navy);color:var(--cream);padding:16px 20px;border-radius:5px;border-left:5px solid var(--gold);margin:14px 0 22px}
+.maria-intro h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold);margin-bottom:5px}
+.maria-intro p{font-size:14px;line-height:1.6}
+.corectare-item{background:white;border:1px solid var(--border);border-radius:6px;padding:18px 20px;margin:16px 0;box-shadow:0 1px 4px rgba(26,39,68,.05)}
+.corectare-item h4{font-family:'Playfair Display',serif;color:var(--navy);font-size:15.5px;margin-bottom:4px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+.puncte-cerinta{display:inline-block;background:var(--gold);color:var(--navy);font-size:11px;padding:2px 7px;border-radius:3px;margin-left:7px;font-weight:700}
+.raspuns-elev{background:var(--cream);border-left:3px solid var(--navy-light);padding:11px 14px;margin:10px 0;border-radius:3px;font-size:14px;line-height:1.6;white-space:pre-wrap;min-height:28px}
+.raspuns-elev:empty::before{content:"— Elevul nu a redactat un răspuns —";color:var(--muted);font-style:italic}
+.eticheta{display:block;font-size:10.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-family:'Playfair Display',serif}
+.barem-mini{font-size:12.5px;color:var(--muted);background:#fef9ee;border:1px dashed var(--gold);border-radius:3px;padding:7px 11px;margin:9px 0}
+.barem-mini strong{color:var(--gold-dark)}
+.corectura-box{margin-top:10px}
+.corectura-box label{display:block;font-size:12px;color:var(--navy);font-weight:700;margin-bottom:4px;font-family:'Playfair Display',serif;letter-spacing:.3px;text-transform:uppercase}
+.corectura-box textarea{width:100%;min-height:100px;padding:11px 13px;border:1px solid var(--gold);border-radius:4px;font-family:'Source Sans 3',sans-serif;font-size:14px;line-height:1.6;background:#fffdf6;resize:vertical}
+.corectura-box textarea:focus{outline:none;border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(201,162,74,.2)}
+.scor-acordat{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 11px;background:var(--cream);border-radius:4px}
+.scor-acordat label{font-size:13px;font-weight:600;color:var(--navy)}
+.scor-acordat input{width:68px;padding:5px 9px;border:1px solid var(--navy);border-radius:3px;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;text-align:center;color:var(--navy)}
+.scor-acordat .max-info{font-size:12.5px;color:var(--muted)}
+.marcaje-corectura{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+.marcaj{display:inline-block;padding:3px 9px;background:var(--cream-dark);color:var(--navy);border:1px solid var(--border);border-radius:12px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.marcaj:hover{background:var(--gold);border-color:var(--gold-dark)}
+.marcaje-label{font-size:11px;color:var(--muted);font-style:italic;margin-right:5px;align-self:center}
+.observatii-generale{background:var(--navy);color:var(--cream);border-radius:6px;padding:18px 20px;margin-top:22px}
+.observatii-generale h4{font-family:'Playfair Display',serif;color:var(--gold);font-size:15px;margin-bottom:7px}
+.observatii-generale textarea{width:100%;min-height:110px;padding:11px 13px;border:1px solid var(--gold);border-radius:4px;font-family:'Source Sans 3',sans-serif;font-size:14px;background:#1f2d4d;color:var(--cream);line-height:1.6;resize:vertical}
+
+/* ────────────────────────────────────────────
+   MARIA PEDAGOG VIRTUAL — buton Ajută-mă
+──────────────────────────────────────────── */
+.ajuta-wrapper{margin-top:14px}
+.ajuta-indicatie{
+  font-size:13px;
+  color:var(--muted);
+  font-style:italic;
+  margin-bottom:8px;
+  padding-left:4px;
+}
+.ajuta-indicatie strong{color:var(--navy);font-style:normal}
+.btn-ajuta{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  background:var(--navy);
+  color:var(--cream);
+  border:2px solid var(--gold);
+  padding:11px 22px;
+  border-radius:24px;
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 3px 10px rgba(26,39,68,.22);
+  letter-spacing:.3px;
+}
+.btn-ajuta:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px);box-shadow:0 5px 16px rgba(201,162,74,.35)}
+.btn-ajuta:active{transform:translateY(0)}
+.btn-ajuta:disabled{opacity:.55;cursor:wait;transform:none}
+.btn-ajuta .ico{font-size:18px}
+.btn-ajuta.loading .ico::after{content:" ⏳"}
+
+/* panoul de răspuns Maria */
+.ajuta-panel{
+  display:none;
+  margin-top:14px;
+  border-radius:8px;
+  overflow:hidden;
+  border:2px solid var(--gold);
+  box-shadow:0 4px 18px rgba(26,39,68,.15);
+  animation:fadeIn .35s ease;
+}
+.ajuta-panel.vizibil{display:block}
+
+.ap-header{
+  background:var(--navy);
+  color:var(--cream);
+  padding:11px 18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:2px solid var(--gold);
+}
+.ap-avatar{
+  width:34px;height:34px;
+  background:var(--gold);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:15px;
+  color:var(--navy);flex-shrink:0;
+}
+.ap-titlu{font-family:'Playfair Display',serif;font-weight:700;font-size:15px;flex:1}
+.ap-subtitlu{display:block;font-size:11px;opacity:.7;font-weight:400;font-style:italic;margin-top:1px}
+
+.ap-body{padding:18px 20px;background:#f8f6f0}
+
+/* loading */
+.ap-loading{display:flex;align-items:center;gap:12px;padding:6px 0;font-size:13.5px;color:var(--navy);font-style:italic}
+.ap-spinner{width:20px;height:20px;border:2.5px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* apreciere generală */
+.ap-apreciere{
+  background:white;
+  border-left:4px solid var(--navy);
+  padding:11px 15px;
+  margin-bottom:13px;
+  border-radius:3px;
+  font-size:14.5px;
+  line-height:1.65;
+  font-style:italic;
+  color:var(--text-dark);
+}
+
+/* puncte tari */
+.ap-tari{
+  background:var(--correct-bg);
+  border:1px solid #a8d5b5;
+  border-radius:4px;
+  padding:10px 14px;
+  margin-bottom:12px;
+}
+.ap-tari-titlu{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:var(--correct);
+  font-size:13px;
+  margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.ap-tari-titlu::before{content:"✓"}
+.ap-tari ul{list-style:none;margin:0}
+.ap-tari li{font-size:13.5px;padding:2px 0;color:#1a4a2e}
+.ap-tari li::before{content:"· ";color:var(--correct)}
+
+/* corecturi cu explicație */
+.ap-corectii-titlu{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:var(--navy);
+  font-size:13.5px;
+  margin:4px 0 8px;
+  display:flex;align-items:center;gap:6px;
+}
+.ap-corectii-titlu::before{content:"✏";font-size:13px}
+
+.cor-card{
+  background:white;
+  border:1px solid #e0d0b8;
+  border-left:4px solid var(--gold-dark);
+  border-radius:4px;
+  padding:11px 14px;
+  margin:8px 0;
+}
+.cor-tip{
+  display:inline-block;
+  background:var(--navy);
+  color:var(--cream);
+  font-size:10px;
+  padding:2px 8px;
+  border-radius:10px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+.cor-compare{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:7px;
+  flex-wrap:wrap;
+}
+.cor-original{
+  background:#fdd;
+  color:#c1121f;
+  padding:3px 8px;
+  border-radius:3px;
+  text-decoration:line-through;
+  font-size:13.5px;
+  font-family:monospace;
+  word-break:break-word;
+}
+.cor-arrow{color:var(--muted);font-size:16px;flex-shrink:0}
+.cor-fix{
+  background:#d4edda;
+  color:#155724;
+  padding:3px 8px;
+  border-radius:3px;
+  font-weight:700;
+  font-size:13.5px;
+  font-family:monospace;
+  word-break:break-word;
+}
+.cor-de-ce{
+  font-size:13.5px;
+  color:var(--text-dark);
+  line-height:1.55;
+  margin-top:4px;
+  padding-top:5px;
+  border-top:1px solid #eee;
+}
+.cor-de-ce::before{
+  content:"De ce: ";
+  font-weight:700;
+  color:var(--navy);
+}
+
+/* sugestie */
+.ap-sugestie{
+  background:#fff8e7;
+  border:1px solid var(--gold);
+  border-radius:4px;
+  padding:10px 14px;
+  margin-top:12px;
+  font-size:13.5px;
+  line-height:1.55;
+}
+.ap-sugestie::before{content:"💡 ";font-size:14px}
+.ap-sugestie strong{color:var(--gold-dark)}
+
+/* încurajare */
+.ap-incurajare{
+  background:var(--navy);
+  color:var(--cream);
+  padding:11px 15px;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:14px;
+  margin-top:12px;
+  border-radius:4px;
+  line-height:1.55;
+}
+.ap-incurajare::before{content:"— Maria: ";color:var(--gold);font-weight:700;font-style:normal;font-size:13px}
+
+/* text complet corect */
+.ap-ok{background:var(--correct-bg);border:1px solid var(--correct);border-radius:4px;padding:11px 15px;color:var(--correct);font-weight:600;font-size:14px;margin:8px 0}
+.ap-ok::before{content:"✓  "}
+
+/* eroare API */
+.ap-eroare{background:#fbeaea;border:1px solid #c1121f;border-radius:4px;padding:11px 15px;color:#c1121f;font-size:13px}
+
+/* helper */
+.helper{background:#f0eee6;padding:7px 13px;border-radius:3px;font-size:12.5px;font-style:italic;color:var(--muted);margin:7px 0}
+
+/* ── API CONFIG PANEL ── */
+.api-config{
+  background:var(--navy);
+  border:1px solid var(--gold);
+  border-radius:6px;
+  margin:16px 0;
+  overflow:hidden;
+}
+.api-config-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 16px;
+  cursor:pointer;
+  color:var(--cream);
+  font-size:13.5px;
+  user-select:none;
+  transition:background .15s;
+}
+.api-config-header:hover{background:var(--navy-light)}
+.api-status-dot{
+  width:9px;height:9px;
+  border-radius:50%;
+  background:#888;
+  flex-shrink:0;
+  transition:background .3s;
+}
+.api-status-dot.activ{background:#4caf50;box-shadow:0 0 6px #4caf5088}
+#api-status-text{flex:1;opacity:.8;font-style:italic;font-size:12.5px}
+.api-toggle-arrow{font-size:12px;color:var(--gold);transition:transform .2s}
+.api-config.deschis .api-toggle-arrow{transform:rotate(90deg)}
+
+.api-config-body{
+  display:none;
+  padding:14px 18px 16px;
+  border-top:1px solid rgba(201,162,74,.3);
+  background:#1f2d4d;
+}
+.api-config.deschis .api-config-body{display:block}
+.api-info{font-size:13px;color:var(--cream-dark);margin-bottom:12px;line-height:1.55}
+.api-info a{color:var(--gold);text-decoration:none}
+.api-info a:hover{text-decoration:underline}
+.api-input-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+#api-key-input{
+  flex:1;min-width:240px;
+  padding:8px 12px;
+  border:1px solid var(--gold);
+  border-radius:4px;
+  background:#0f1a2e;
+  color:var(--cream);
+  font-family:monospace;
+  font-size:13px;
+}
+#api-key-input:focus{outline:none;border-color:#f0a500;box-shadow:0 0 0 2px rgba(201,162,74,.25)}
+.btn-api-save{
+  background:var(--gold);color:var(--navy);border:none;
+  padding:8px 16px;border-radius:4px;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:13px;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.btn-api-save:hover{background:var(--gold-dark);color:white}
+.btn-api-clear{
+  background:transparent;color:var(--cream-dark);
+  border:1px solid rgba(255,255,255,.2);
+  padding:8px 12px;border-radius:4px;
+  font-size:12.5px;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.btn-api-clear:hover{background:rgba(255,255,255,.1)}
+.api-nota{font-size:11.5px;color:var(--cream-dark);opacity:.6;font-style:italic}
+
+/* ── MODEL ESEU ── */
+.model-eseu-wrapper{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px dashed var(--gold);
+}
+.model-eseu-intro{
+  font-size:13px;
+  color:var(--muted);
+  font-style:italic;
+  margin-bottom:10px;
+}
+.btn-model-eseu{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:white;
+  color:var(--navy);
+  border:2px solid var(--navy);
+  padding:10px 20px;
+  border-radius:20px;
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  transition:all .2s;
+  margin-bottom:14px;
+}
+.btn-model-eseu:hover{background:var(--navy);color:var(--cream)}
+.btn-model-eseu:disabled{opacity:.55;cursor:wait}
+
+.model-loading{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  font-size:13.5px;
+  font-style:italic;
+  color:var(--navy);
+}
+
+.model-eseu-container{
+  background:white;
+  border:2px solid var(--navy);
+  border-radius:6px;
+  overflow:hidden;
+  margin-top:6px;
+}
+.model-eseu-header{
+  background:var(--navy);
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.model-eseu-badge{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:var(--gold);
+  font-size:13.5px;
+}
+.model-eseu-nota{
+  font-size:12px;
+  color:var(--cream-dark);
+  font-style:italic;
+  opacity:.8;
+}
+.model-eseu-text{
+  padding:20px 22px;
+  font-size:14.5px;
+  line-height:1.75;
+  color:var(--text-dark);
+}
+.model-sectiune-titlu{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:var(--navy);
+  font-size:15px;
+  margin:18px 0 8px;
+  padding-bottom:4px;
+  border-bottom:2px solid var(--gold);
+}
+.model-sectiune-titlu:first-child{margin-top:0}
+.model-paragraf{margin-bottom:8px}
+.model-eseu-nota-final{
+  font-size:12.5px;
+  font-style:italic;
+  color:var(--muted);
+  padding:10px 22px 14px;
+  border-top:1px solid var(--border);
+  background:var(--cream);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:760px){
+  .container{padding:12px 10px 90px}
+  .tabs{gap:2px}
+  .tab-btn{min-width:0;font-size:11.5px;padding:9px 5px}
+  .tab-content{padding:18px 14px}
+  .evaluare-final{grid-template-columns:1fr}
+  .tf-item{grid-template-columns:1fr;gap:7px}
+  .matching-row{grid-template-columns:auto 1fr;gap:7px}
+  .matching-row select{grid-column:1/-1;width:100%}
+  .cor-compare{flex-direction:column;align-items:flex-start}
+  .total-mare{font-size:40px}
+}
+
+/* ── PRINT ── */
+@media print{
+  body{background:white;font-size:11pt;color:black}
+  header{background:white !important;color:black;border-bottom:2px solid #333;padding:8pt}
+  header h1{color:black}
+  header .subtitle{color:#555}
+  .tabs,.btn,.btn-pdf-fix,.btn-ajuta,.ajuta-panel,.sugestii,.marcaje-corectura{display:none !important}
+  .tab-content{display:block !important;page-break-before:always;border:none;padding:0}
+  .tab-content:first-of-type{page-break-before:auto}
+  .container{max-width:none;padding:8pt}
+  .barem-panel,.rezultat-subiect{display:block !important}
+  textarea,input{border:1px solid #999 !important;background:white !important;color:black !important}
+  .raspuns-elev{background:#f5f5f5;color:black;border-color:#999}
+  .total-final-box{background:white;color:black;border:2px solid black}
+  .total-mare,.nota-finala strong{color:black}
+  .observatii-generale{background:white;color:black}
+  .observatii-generale textarea{background:white;color:black;border:1px solid #999}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Simulare Bacalaureat — Limba și literatura română<br><span style="font-size:clamp(14px,1.8vw,20px);font-weight:400;font-style:italic">pentru elevi maghiari · B1–B2+</span></h1>
+  <div class="meta">
+    <span class="robot-wrap">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:7px">
+        <!-- cap -->
+        <rect x="5" y="8" width="18" height="14" rx="3" fill="#c9a24a"/>
+        <!-- antenă -->
+        <line x1="14" y1="8" x2="14" y2="3" stroke="#c9a24a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="14" cy="2.5" r="1.8" fill="#f5f0e8"/>
+        <!-- ochi -->
+        <circle cx="10" cy="14" r="2.2" fill="#1a2744"/>
+        <circle cx="18" cy="14" r="2.2" fill="#1a2744"/>
+        <circle cx="10.7" cy="13.3" r=".7" fill="white"/>
+        <circle cx="18.7" cy="13.3" r=".7" fill="white"/>
+        <!-- gură -->
+        <path d="M10.5 18.5 Q14 21 17.5 18.5" stroke="#1a2744" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <!-- corp mic -->
+        <rect x="9" y="22" width="10" height="4" rx="2" fill="#c9a24a" opacity=".6"/>
+      </svg>
+      <strong style="font-family:'Playfair Display',serif;font-size:15px;letter-spacing:.4px">Maria-pedagog</strong>
+      <span style="opacity:.7;font-size:12px;margin-left:6px">· asistentă virtuală pentru română L2</span>
+    </span>
+    <div class="header-links">
+      <a class="hlink" href="https://www.edu.ro/programe_probe_examen_bacalaureat_2024" target="_blank" rel="noopener">
+        📄 Programe BAC — edu.ro
+      </a>
+      <span class="hlink-sep">·</span>
+      <a class="hlink" href="https://www.edu.ro/modele_subiecte_examene_nationale" target="_blank" rel="noopener">
+        📝 Modele subiecte BAC 2025
+      </a>
+      <span class="hlink-sep">·</span>
+      <a class="hlink" href="https://alba24.ro/wp-content/uploads/2025/02/Programe-scolare-Limba-si-literatura-romana-pentru-scolile-si-sectiile-cu-predare-in-limba-maghiara-bacalaureat.pdf" target="_blank" rel="noopener">
+        📘 Programa oficială RLNM (Ordin 6177/2024)
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<div class="algoritm">
+  <h2>Algoritm de lucru — structura subiectelor</h2>
+  <ul>
+    <li><strong>Subiectul I (30 de puncte):</strong> exerciții pe baza unui text non-literar — alegere multiplă, adevărat/fals, fragmente lipsă, completare.</li>
+    <li><strong>Subiectul al II-lea (30 de puncte):</strong> exerciții pe baza unui text literar + text argumentativ minimum 100 de cuvinte.</li>
+    <li><strong>Subiectul al III-lea (30 de puncte):</strong> eseu structurat minimum 300 de cuvinte — una dintre cele <strong>trei teme oficiale BAC</strong>: <em>Experiențe fundamentale ale existenței</em> · <em>Subiect și alteritate</em> · <em>Tradiție și modernitate</em>.</li>
+    <li><strong>Punctaj din oficiu:</strong> 10 puncte. <strong>Total: 100 puncte → nota = punctaj ÷ 10.</strong></li>
+    <li><strong>Timp de lucru:</strong> 3 ore.</li>
+  </ul>
+</div>
+
+<!-- CONFIGURARE CHEIE API Google AI Studio -->
+<div class="api-config deschis" id="api-config">
+  <div class="api-config-header" id="api-toggle">
+    <span class="api-status-dot" id="api-dot"></span>
+    <strong>Maria-pedagog · Gemma</strong>
+    <span id="api-status-text">— introduceți cheia Google AI Studio</span>
+    <span class="api-toggle-arrow">▸</span>
+  </div>
+  <div class="api-config-body" id="api-body">
+    <p class="api-info">Introduceți cheia API de la <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Cheia dispare la închiderea paginii.</p>
+    <div class="api-input-row">
+      <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="off" spellcheck="false">
+      <button class="btn-api-save" id="btn-api-save">Salvează</button>
+      <button class="btn-api-clear" id="btn-api-clear">Șterge</button>
+    </div>
+    <p class="api-nota">Powered by Gemma · Google AI Studio · Gemma 4 Good Hackathon 2025</p>
+  </div>
+</div>
+
+<!-- TAB NAV -->
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="t1">Subiectul I<span class="puncte">30 puncte</span></button>
+  <button class="tab-btn" data-tab="t2">Subiectul al II-lea<span class="puncte">30 puncte</span></button>
+  <button class="tab-btn" data-tab="t3">Subiectul al III-lea<span class="puncte">30 puncte</span></button>
+  <button class="tab-btn" data-tab="t4">Evaluare<span class="puncte">centralizare</span></button>
+  <button class="tab-btn" data-tab="t5">Corectură Maria<span class="puncte">română academică</span></button>
+</div>
+
+<!-- ══════════════ SUBIECTUL I ══════════════ -->
+<section id="t1" class="tab-content active">
+  <h2 class="subiect-titlu">Subiectul I</h2>
+  <span class="puncte-total">30 de puncte</span>
+
+  <div class="text-source">
+    <h3>Citește cu atenție textul dat</h3>
+    <p>Anul 2024 a fost unul dinamic, marcând aproape 11 milioane de aplicări și peste 320.000 de conturi noi pe eJobs. Dacă îți cauți un loc de muncă sau vrei să știi cum s-au schimbat tendințele pe piața muncii, iată principalele aspecte care te pot interesa!</p>
+    <span class="titlu-articol">Cum s-a prezentat piața muncii în 2024</span>
+    <p>2024 a fost un an al prudenței pe piața muncii, în care angajatorii au postat aproape 300.000 de joburi noi, dar și în care candidații au fost foarte activi în a-și căuta un nou loc de muncă, în condițiile în care au fost înregistrate aproximativ 11 milioane de aplicări, potrivit datelor din cea de-a 9-a ediție a raportului anual <em>Review &amp; Trends</em> realizat de eJobs România.</p>
+    <p>87,9% din totalul joburilor postate au fost pentru România, 4,2% pentru străinătate și 7,9% remote. Orașele cu cele mai multe joburi au fost București, Cluj-Napoca, Iași, Brașov, Ilfov, Timișoara, Craiova, Constanța, Ploiești și Bacău.</p>
+    <span class="titlu-articol">Cele mai căutate domenii în 2024</span>
+    <p>Domeniile care au scos în piață cele mai multe joburi au fost retail, prestări servicii și industria alimentară — ierarhie păstrată din 2023. Pe locul al patrulea se află industria de call center/BPO, în creștere cu 3 poziții față de 2023. Pe locul al cincilea sunt angajatorii din turism/HoReCa, în scădere cu un loc față de 2023, iar clasamentul continuă cu transport/logistică, construcții, producție, IT/telecom și banking.</p>
+    <p>Nu la fel arată și topul celor mai atrăgătoare domenii pentru candidați. Dacă primul rămâne retailul, pe următoarele poziții se regăsesc call center/BPO, prestări servicii, IT/telecom, banking, turism/HoReCa și transport/logistică.</p>
+    <div class="sursa">Mihaela Stoica, <em>Cum s-au schimbat tendințele pe piața muncii în 2024</em> (www.cariera.ejobs.ro)</div>
+  </div>
+
+  <details class="vocabular">
+    <summary>Vocabular cheie</summary>
+    <div class="voc-content"><dl>
+      <dt>aplicare</dt><dd>acțiunea de a candida pentru un loc de muncă</dd>
+      <dt>tendință</dt><dd>direcție de evoluție, schimbare</dd>
+      <dt>remote</dt><dd>locuri de muncă de la distanță, de acasă</dd>
+      <dt>retail</dt><dd>comerțul cu amănuntul (magazine)</dd>
+      <dt>call center / BPO</dt><dd>centre de apeluri și externalizare de procese</dd>
+      <dt>HoReCa</dt><dd>hotele, restaurante, cafenele</dd>
+      <dt>candidat</dt><dd>persoana care caută loc de muncă</dd>
+      <dt>angajator</dt><dd>persoana sau firma care oferă locul de muncă</dd>
+    </dl></div>
+  </details>
+
+  <!-- I.1 -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">I. Alegere multiplă <span class="cerinta-puncte">6 puncte</span></div>
+    <div class="cerinta-instructiune">Scrie litera corespunzătoare răspunsului corect.<br><strong>Conform studiului, din totalul joburilor postate, … au fost pentru străinătate.</strong></div>
+    <div class="optiuni">
+      <label><input type="radio" name="i1" value="a"><span>a. 7,9%</span></label>
+      <label><input type="radio" name="i1" value="b"><span>b. 4,2%</span></label>
+      <label><input type="radio" name="i1" value="c"><span>c. 87,9%</span></label>
+      <label><input type="radio" name="i1" value="d"><span>d. 11%</span></label>
+    </div>
+  </div>
+
+  <!-- I.2 -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">II. Adevărat sau Fals <span class="cerinta-puncte">8 puncte (4 × 2)</span></div>
+    <div class="cerinta-instructiune">Notează <strong>„A"</strong> sau <strong>„F"</strong> pentru fiecare enunț.</div>
+    <div class="tf-list">
+      <div class="tf-item">
+        <div class="tf-item-text"><strong>a.</strong> Studiul realizează o scurtă prezentare a tendințelor pe piața muncii pe parcursul unui an.</div>
+        <div class="tf-controls"><label><input type="radio" name="i2a" value="A"><span>A</span></label><label><input type="radio" name="i2a" value="F"><span>F</span></label></div>
+      </div>
+      <div class="tf-item">
+        <div class="tf-item-text"><strong>b.</strong> În anul 2024 s-a constatat un interes scăzut față de oferta locurilor de muncă.</div>
+        <div class="tf-controls"><label><input type="radio" name="i2b" value="A"><span>A</span></label><label><input type="radio" name="i2b" value="F"><span>F</span></label></div>
+      </div>
+      <div class="tf-item">
+        <div class="tf-item-text"><strong>c.</strong> În 2023 domeniile cu cele mai multe joburi au fost retail, prestări servicii și industrie alimentară.</div>
+        <div class="tf-controls"><label><input type="radio" name="i2c" value="A"><span>A</span></label><label><input type="radio" name="i2c" value="F"><span>F</span></label></div>
+      </div>
+      <div class="tf-item">
+        <div class="tf-item-text"><strong>d.</strong> Cei mai mulți candidați au fost atrași de joburi în domeniul turismului.</div>
+        <div class="tf-controls"><label><input type="radio" name="i2d" value="A"><span>A</span></label><label><input type="radio" name="i2d" value="F"><span>F</span></label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- I.3 -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">III. Fragmente lipsă <span class="cerinta-puncte">8 puncte (4 × 2)</span></div>
+    <div class="cerinta-instructiune">Scrie, în dreptul fiecărei cifre, una dintre literele (a–e) corespunzătoare fragmentelor lipsă.</div>
+    <div class="text-source" style="margin:12px 0">
+      <span class="titlu-articol">Sezonul aplicărilor: tot anul!</span>
+      <p>______ <strong>(1)</strong> pentru obținerea unui nou loc de muncă. Cele 11 milioane de aplicări au venit și cu peste 320.000 de conturi noi create de candidați, în creștere cu 20,6% față de 2023.</p>
+      <p>85% dintre aplicări au fost pentru joburile full time. <em>„…deși candidații au rămas tot mai înclinați către un al doilea job, ______ <strong>(2)</strong>"</em>, completează Bogdan Badea.</p>
+      <p>S-a înregistrat o scădere de 36% a joburilor remote față de 2023. Concret, ______ <strong>(3)</strong>, care au atras 1,5 milioane de aplicări. Cele mai multe locuri de muncă au venit din ______ <strong>(4)</strong>.</p>
+    </div>
+    <div class="optiuni-fragmente">
+      <p><strong>a.</strong> angajatorii au avut 12.800 de poziții deschise</p>
+      <p><strong>b.</strong> ca urmare a nivelului ridicat al inflației și costului ridicat al vieții</p>
+      <p><strong>c.</strong> 2024 a fost un an în care a crescut interesul candidaților</p>
+      <p><strong>d.</strong> Cei care au optat pentru o carieră peste hotare s-au uitat la Germania, Olanda.</p>
+      <p><strong>e.</strong> call-center / BPO, IT / telecom, prestări servicii, retail și educație / training</p>
+    </div>
+    <div class="matching-list">
+      <div class="matching-row"><span class="nr">(1)</span><span>Fragmentul care lipsește:</span><select name="i3-1"><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div>
+      <div class="matching-row"><span class="nr">(2)</span><span>Fragmentul care lipsește:</span><select name="i3-2"><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div>
+      <div class="matching-row"><span class="nr">(3)</span><span>Fragmentul care lipsește:</span><select name="i3-3"><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div>
+      <div class="matching-row"><span class="nr">(4)</span><span>Fragmentul care lipsește:</span><select name="i3-4"><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div>
+    </div>
+  </div>
+
+  <!-- I.4 -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">IV. Completare cu varianta potrivită <span class="cerinta-puncte">8 puncte (4 × 2)</span></div>
+    <div class="cerinta-instructiune">Alege varianta potrivită din: <em>cele, celor, lor, cei, acei, care, căror, a căror, a noului, ale noului</em>.</div>
+    <div class="fill-text">
+      23.000 de poziții au fost deschise anul trecut, <input type="text" class="fill-in" name="i4-5" placeholder="(5)"> mai multe pentru Germania, Olanda, Grecia. Cu toate acestea, 2024 a fost anul cu cele mai puține aplicări pentru joburi din afara țării din ultimii 6 ani, iar <input type="text" class="fill-in" name="i4-6" placeholder="(6)"> care au optat pentru o carieră peste hotare s-au uitat la Germania, Olanda, Franța.<br><br>
+      Explorează domeniile <input type="text" class="fill-in" name="i4-7" placeholder="(7)"> sunt în creștere. <em>Review &amp; Trends</em> cuprinde tendințele pe piața muncii <input type="text" class="fill-in" name="i4-8" placeholder="(8)"> an.
+    </div>
+    <div class="helper">Scrie cu diacritice (ă, â, î, ș, ț), exact ca în lista propusă.</div>
+  </div>
+
+  <button class="btn" id="btn-verifica-i">Verifică Subiectul I</button>
+  <button class="btn btn-secondary" id="btn-barem-i">Arată baremul</button>
+
+  <div class="rezultat-subiect" id="rez-i">
+    <h3>Rezultat — Subiectul I</h3>
+    <div class="scor-bar"><span class="scor-mare" id="scor-i">0</span><span class="scor-mic">/ 30 de puncte</span></div>
+    <div id="detalii-i"></div>
+  </div>
+
+  <div class="barem-panel" id="barem-i">
+    <h3>Baremul oficial — Subiectul I</h3>
+    <div class="criteriu"><h4>I. Alegere multiplă <span class="punctaj">6p</span></h4>Răspuns corect: <strong>b. 4,2%</strong></div>
+    <div class="criteriu"><h4>II. Adevărat / Fals <span class="punctaj">4 × 2p</span></h4><ul>
+      <li><strong>a. A</strong> — prezintă tendințele pe un an</li>
+      <li><strong>b. F</strong> — candidații au fost foarte activi (nu interes scăzut)</li>
+      <li><strong>c. A</strong> — ierarhia din 2023: retail, prestări servicii, industrie alimentară</li>
+      <li><strong>d. F</strong> — primul loc: retailul</li>
+    </ul></div>
+    <div class="criteriu"><h4>III. Fragmente lipsă <span class="punctaj">4 × 2p</span></h4><ul>
+      <li><strong>(1) c</strong> — „2024 a fost un an în care a crescut interesul candidaților"</li>
+      <li><strong>(2) b</strong> — „ca urmare a nivelului ridicat al inflației"</li>
+      <li><strong>(3) a</strong> — „angajatorii au avut 12.800 de poziții deschise"</li>
+      <li><strong>(4) e</strong> — „call-center / BPO, IT / telecom…"</li>
+    </ul></div>
+    <div class="criteriu"><h4>IV. Completare <span class="punctaj">4 × 2p</span></h4><ul>
+      <li><strong>(5) cele</strong></li><li><strong>(6) cei</strong> — pronume demonstrativ, antecedent al relativului „care"</li>
+      <li><strong>(7) care</strong></li><li><strong>(8) ale noului</strong></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ══════════════ SUBIECTUL AL II-LEA ══════════════ -->
+<section id="t2" class="tab-content">
+  <h2 class="subiect-titlu">Subiectul al II-lea</h2>
+  <span class="puncte-total">30 de puncte</span>
+
+  <div class="text-source">
+    <h3>Citește cu atenție textul dat</h3>
+    <p><em>Doamne, cât îmi doresc să fac medicina, dar psihiatră nici pentru tot aurul din lume n-aș vrea s-ajung.</em> Așa își spunea Florina care, la optsprezece ani, fără o meditație măcar, intrase la Medicină, la douăzeci de candidați pe-un loc. Făcuse un an de Facultate cu nicio notă sub nouă dar, cum lupta de clasă nu dormea, după primul an fusese exmatriculată. Îi venise din nou rândul unchiului Gogu să se roage de cei de la partid pentru ca Florina să fie admisă la o școală postliceală de tehnică dentară. Și așa, închizând ei ochii asupra dosarului fetei, ea termină șefă de promoție la școala postliceală. Florina fusese numită la o policlinică de ortodonție pentru copii, în centrul Bucureștilor.</p>
+    <p>O altă aripă a policlinicii era pentru adulți. Aceea cu plată. Acolo lucra unul dintre stomatologii pe care-i avusese Florina profesori. Acesta apela mereu la serviciile Florinei, în special pentru lucrări complicate care cereau mare pricepere și multă răbdare. Florina acceptase propunerea, muncind în afara programului, cu material furnizat de stomatolog.</p>
+    <p>Pacienții doctorului, foarte mulțumiți de tânăra tehniciană, o întrebau cât costa munca ei. <em>„Vă rog să vorbiți cu domnul doctor."</em> <em>„De ce ești proastă și nu iei banii?"</em>, o îndemnase doctorul. <em>„Domnule doctor, mie mi-e frică și de umbra mea. De la părinții copiilor cărora le fac aparate nu primesc nici măcar un săpun. Nu vreau să poată, la o adică, să mă învinuiască cineva de ceva."</em></p>
+    <p>Corect, medicul îi dădea Florinei cât socotise de la început munca tehnicianului. Părinții modești și cei săraci o căutau pe Florina știind că, în afară de costul legal, nu era nevoie de „atenții"; ba, tehniciana le mai repara pe gratis părinților și bunicilor, o lucrare, o proteză.</p>
+    <p>Doctorul Dănescu se gândise numaidecât la Florina pentru un apartament nou. <em>„Vă mulțumesc, domnule doctor, dar de unde bani?"</em> <em>„Îți achit eu avansul și-mi dai banii când poți."</em> <em>„Și dacă mor și n-apuc să vi-i dau?"</em> <em>„Ne socotim pe cealaltă lume. Florina, cu ocazia asta nu te mai întâlnești."</em></p>
+    <div class="sursa">Ileana Vulpescu, <em>Pe apa Sâmbetei</em> (2009)</div>
+  </div>
+
+  <details class="vocabular">
+    <summary>Vocabular cheie</summary>
+    <div class="voc-content"><dl>
+      <dt>meditație</dt><dd>oră particulară, plătită, de pregătire pentru un examen</dd>
+      <dt>lupta de clasă</dt><dd>expresie comunistă: persecutarea celor cu „dosar prost"</dd>
+      <dt>exmatriculată</dt><dd>scoasă, eliminată din facultate</dd>
+      <dt>policlinică</dt><dd>unitate medicală cu mai multe specialități</dd>
+      <dt>ortodonție</dt><dd>specialitate: îndreptarea dinților (aparate dentare)</dd>
+      <dt>tehnician dentar</dt><dd>persoană care face aparate și proteze dentare</dd>
+      <dt>atenții</dt><dd>eufemism: cadouri sau șpagă date medicului</dd>
+      <dt>C.A.R.</dt><dd>Casa de Ajutor Reciproc — sistem de împrumut între angajați</dd>
+    </dl></div>
+  </details>
+
+  <!-- A.I -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">A.I — Precizarea unei teme <span class="cerinta-puncte">6 puncte</span></div>
+    <div class="cerinta-instructiune">Una dintre temele fragmentului este <strong>Experiențe fundamentale ale existenței</strong>. Precizează, în <strong>două-trei enunțuri</strong>, o altă temă identificată în text, justificând răspunsul.</div>
+    <details class="sugestii">
+      <summary>Sugestii de structură</summary>
+      <div class="sug-content"><ol>
+        <li><em>Identificare:</em> „O altă temă este…" (ex: integritatea morală, subiect și alteritate, condiția intelectualului, banul vs. demnitatea)</li>
+        <li><em>Justificare:</em> „Această temă este susținută de faptul că…" (referire la un episod din text)</li>
+        <li><em>Concluzie:</em> „Astfel, textul ilustrează…"</li>
+      </ol></div>
+    </details>
+    <textarea class="deschis" id="ai" placeholder="Scrie răspunsul tău aici (2–3 enunțuri)…"></textarea>
+    <div class="word-count" data-target="ai" data-min="20">0 cuvinte</div>
+
+    <!-- MARIA AJUTĂ-MĂ -->
+    <div class="ajuta-wrapper">
+      <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
+      <button class="btn-ajuta" id="baj-ai"
+        data-ta="ai"
+        data-context="Cerinta A.I, Subiectul al II-lea, BAC L2 RLNM B1+: precizarea altei teme din fragmentul romanului Pe apa Sambetei de Ileana Vulpescu (personaj: Florina, tehniciana dentara, integra moral), cu justificare in 2-3 enunturi. TEMELE OFICIALE BAC sunt exact trei: (1) Experiente fundamentale ale existentei, (2) Subiect si alteritate, (3) Traditie si modernitate. Elevul este vorbitor nativ de maghiara care invata romana.">
+        <span class="ico">🎓</span> Ajută-mă
+      </button>
+      <div class="ajuta-panel" id="ap-ai"></div>
+    </div>
+  </div>
+
+  <!-- A.II -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">A.II — Trăsătura personajului feminin <span class="cerinta-puncte">6 puncte</span></div>
+    <div class="cerinta-instructiune">Prezintă, în <strong>minimum 30 de cuvinte</strong>, o trăsătură a Florinei, menționând mijlocul de caracterizare.</div>
+    <details class="sugestii">
+      <summary>Sugestii de structură</summary>
+      <div class="sug-content"><ol>
+        <li><em>Numire:</em> „O trăsătură a Florinei este…" (ex: integritate morală, seriozitate, modestie)</li>
+        <li><em>Mijloc:</em> directă (narrator/alt personaj) sau indirectă (din fapte, replici)</li>
+        <li><em>Argument:</em> o secvență din text care susține trăsătura</li>
+      </ol></div>
+    </details>
+    <textarea class="deschis" id="aii" placeholder="Scrie răspunsul tău (minimum 30 de cuvinte)…"></textarea>
+    <div class="word-count" data-target="aii" data-min="30">0 cuvinte (minimum 30)</div>
+
+    <!-- MARIA AJUTĂ-MĂ -->
+    <div class="ajuta-wrapper">
+      <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
+      <button class="btn-ajuta" id="baj-aii"
+        data-ta="aii"
+        data-context="Cerinta A.II, Subiectul al II-lea, BAC L2 RLNM B1+: prezentarea unei trasaturi a personajului feminin Florina (tehniciana dentara) din Pe apa Sambetei, cu mijlocul de caracterizare, minimum 30 de cuvinte. TEMELE OFICIALE BAC sunt: (1) Experiente fundamentale, (2) Subiect si alteritate, (3) Traditie si modernitate. Elevul vorbitor nativ de maghiara.">
+        <span class="ico">🎓</span> Ajută-mă
+      </button>
+      <div class="ajuta-panel" id="ap-aii"></div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="cerinta">
+    <div class="cerinta-titlu">B — Text argumentativ <span class="cerinta-puncte">18 puncte</span></div>
+    <div class="cerinta-instructiune">Redactează un text de <strong>minimum 100 de cuvinte</strong> în care să argumentezi dacă <strong>seriozitatea la locul de muncă este importantă sau nu pentru a avea succes</strong>.<br><br>
+    Ai în vedere: ipoteză · opinie · două argumente · concluzie · conectori · limbă literară.</div>
+    <details class="sugestii">
+      <summary>Sugestii de structură</summary>
+      <div class="sug-content"><ol>
+        <li><em>Ipoteză:</em> formulezi problema — „Este seriozitatea importantă pentru succes la locul de muncă?"</li>
+        <li><em>Opinie</em> (imediat după ipoteză): îți exprimi poziția — „Consider că seriozitatea este / nu este…"</li>
+        <li><em>Argument 1:</em> „În primul rând, …" + explicație + exemplu</li>
+        <li><em>Argument 2:</em> „În al doilea rând, …" + explicație + exemplu</li>
+        <li><em>Concluzie:</em> „În concluzie, …" — reia opinia într-o formă mai puternică</li>
+        <li><em>Conectori:</em> mai întâi · în plus · de asemenea · prin urmare · totuși · astfel · în concluzie</li>
+      </ol></div>
+    </details>
+    <textarea class="deschis argumentativ" id="b" placeholder="Redactează textul argumentativ (minimum 100 de cuvinte)…"></textarea>
+    <div class="word-count" data-target="b" data-min="100">0 cuvinte (minimum 100)</div>
+    <div class="helper">Structură: ipoteză · opinie · argument 1 · argument 2 · concluzie · conectori. Conținut 14p · redactare 4p.</div>
+
+    <!-- MARIA AJUTĂ-MĂ -->
+    <div class="ajuta-wrapper">
+      <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
+      <button class="btn-ajuta" id="baj-b"
+        data-ta="b"
+        data-context="Cerinta B, Subiectul al II-lea, BAC L2 RLNM B1+: text argumentativ (min 100 cuvinte) despre importanta seriozitati la locul de munca. Structura CORECTA BAC: (1) Ipoteza — formularea problemei, (2) Opinie — pozitia elevului imediat dupa ipoteza, (3) Argument 1 cu exemplificare, (4) Argument 2 cu exemplificare, (5) Concluzie. Ipoteza si Opinia sunt doua elemente distincte, nu unul singur. Verifica daca elevul a formulat AMBELE: ipoteza ca intrebare sau enunt neutru, si opinia ca pozitie clara. Elevul vorbitor nativ de maghiara, romana L2 nivel B1+.">
+        <span class="ico">🎓</span> Ajută-mă
+      </button>
+      <div class="ajuta-panel" id="ap-b"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-secondary" id="btn-barem-ii">Arată baremul</button>
+  <div class="barem-panel" id="barem-ii">
+    <h3>Baremul oficial — Subiectul al II-lea</h3>
+    <div class="criteriu"><h4>A.I. Tema <span class="punctaj">6p</span></h4><ul>
+      <li>Precizarea temei (ex: subiect și alteritate, integritate morală) — 2p</li>
+      <li>Justificare prin valorificarea textului — 4p</li>
+    </ul></div>
+    <div class="criteriu"><h4>A.II. Trăsătură <span class="punctaj">6p</span></h4><ul>
+      <li>Trăsătură adecvată (integritate morală, seriozitate, modestie) — 2p</li>
+      <li>Mijlocul de caracterizare (indirectă — fapte și replici) — 1p</li>
+      <li>Prezentare min. 30 cuvinte, valorificând textul — 3p</li>
+    </ul></div>
+    <div class="criteriu"><h4>B. Text argumentativ <span class="punctaj">18p</span></h4><ul>
+      <li>Ipoteză — 1p · Opinie — 1p · 2 argumente — 4p · dezvoltare — 3p · exemplificare — 3p · concluzie — 2p · redactare — 4p</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ══════════════ SUBIECTUL AL III-LEA ══════════════ -->
+<section id="t3" class="tab-content">
+  <h2 class="subiect-titlu">Subiectul al III-lea</h2>
+  <span class="puncte-total">30 de puncte</span>
+
+  <div class="cerinta">
+    <div class="cerinta-titlu">Eseu structurat <span class="cerinta-puncte">22p conținut + 8p redactare</span></div>
+    <div class="cerinta-instructiune">Scrie un eseu structurat de <strong>minimum 300 de cuvinte</strong>, ilustrând tema dată.<br><br>
+    <strong>Cele trei teme posibile la BAC:</strong>
+    <ul style="margin:8px 0 10px 22px;font-size:14px">
+      <li><strong>Experiențe fundamentale ale existenței</strong> — iubire, moarte, timp, destin, condiția umană</li>
+      <li><strong>Subiect și alteritate</strong> — raportul eu/celălalt, identitate, dialog, oglindire</li>
+      <li><strong>Tradiție și modernitate</strong> — tensiunea vechi/nou, continuitate, inovație culturală</li>
+    </ul>
+    <strong>Tema acestui subiect: Experiențe fundamentale ale existenței.</strong><br><br>
+    Valorifici: un text literar studiat la clasă + unul dintre textele date (<em>Mihaela Stoica</em> sau <em>Ileana Vulpescu</em>).<br>
+    Ai în vedere: elemente de teorie literară · comparație (asemănare și deosebire) · scene semnificative · experiență culturală.</div>
+    <details class="sugestii">
+      <summary>Sugestii de structură</summary>
+      <div class="sug-content"><ol>
+        <li><em>Introducere:</em> definești tema și anunți cele două texte alese.</li>
+        <li><em>Text 1 (literar studiat):</em> element de teorie literară (specie, gen, curent) + scenă semnificativă + cum reflectă tema.</li>
+        <li><em>Text 2 (din textele date):</em> tip de text/discurs + secvență semnificativă + cum reflectă tema.</li>
+        <li><em>Comparație:</em> o <strong>asemănare</strong> + o <strong>deosebire</strong> între cele două texte în reflectarea temei.</li>
+        <li><em>Valorificarea experienței culturale</em> <span style="color:var(--gold-dark);font-weight:700">(4 puncte din barem)</span>: raportezi tema la experiența ta culturală mai largă — lecturi, filme, evenimente, experiențe personale care se leagă de temă.</li>
+        <li><em>Încheiere:</em> concluzie care reia tema și importanța ei.</li>
+        <li><em>Texte posibile:</em> Eminescu (<em>Luceafărul</em>), Caragiale, Stănescu, Blaga, Barbu, Preda, Bacovia.</li>
+      </ol></div>
+    </details>
+    <textarea class="deschis eseu" id="eseu" placeholder="Redactează eseul (minimum 300 de cuvinte)…"></textarea>
+    <div class="word-count" data-target="eseu" data-min="300">0 cuvinte (minimum 300)</div>
+    <div class="helper">Barem conținut 22p: teorie literară 6p · scene semnificative 6p · comparație 6p · valorificarea experienței culturale 4p. Redactare 8p.</div>
+
+    <!-- MARIA AJUTĂ-MĂ -->
+    <div class="ajuta-wrapper">
+      <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
+      <button class="btn-ajuta" id="baj-eseu"
+        data-ta="eseu"
+        data-context="Subiectul III, BAC L2 RLNM B1+, eseu min 300 cuvinte. Tema: Experiente fundamentale ale existentei (sau Subiect si alteritate, sau Traditie si modernitate). Barem - 4 criterii: (1) Teorie literara pentru ambele texte - specie, gen, curent, tip de text, cu exemplu (6p); (2) Scene semnificative pentru fiecare text (6p); (3) Comparatie - o asemanare si o deosebire in reflectarea temei (6p); (4) Valorificarea experientei culturale - element DISTINCT, nu in incheiere (4p). Eseul valorifica un text literar studiat si unul din textele date. Elevul vorbitor nativ de maghiara, romana L2 B1+.">
+        <span class="ico">🎓</span> Ajută-mă
+      </button>
+      <div class="ajuta-panel" id="ap-eseu"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-secondary" id="btn-barem-iii">Arată baremul</button>
+  <div class="barem-panel" id="barem-iii">
+    <h3>Baremul oficial — Subiectul al III-lea</h3>
+    <div class="criteriu"><h4>Conținut <span class="punctaj">22p</span></h4><ul>
+      <li>Elemente de teorie literară pentru ambele texte, cu exemplu — 6p</li>
+      <li>Comparație: asemănare + deosebire — 6p</li>
+      <li>Scenă semnificativă pentru fiecare text — 6p</li>
+      <li>Valorificarea experienței culturale — 4p</li>
+    </ul></div>
+    <div class="criteriu"><h4>Redactare <span class="punctaj">8p</span></h4><ul>
+      <li>Structură (intro/cuprins/încheiere) 1p · logică 1p · analiză/argumentare 2p · limbă literară 2p · ortografie 1p · punctuație 1p</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ══════════════ EVALUARE ══════════════ -->
+<section id="t4" class="tab-content">
+  <h2 class="subiect-titlu">Evaluare finală</h2>
+  <span class="puncte-total">centralizare</span>
+  <div class="helper">Subiectul I — calculat automat. Subiectele II și III — introdus de profesor în Caseta de Corectură.</div>
+  <div class="evaluare-final">
+    <div class="eval-card"><h3>Subiectul I (auto)</h3><div class="scor-eval"><span id="eval-i">0</span><span class="max"> / 30</span></div></div>
+    <div class="eval-card"><h3>Subiectul al II-lea (profesor)</h3><div class="scor-eval"><span id="eval-ii">0</span><span class="max"> / 30</span></div></div>
+    <div class="eval-card"><h3>Subiectul al III-lea (profesor)</h3><div class="scor-eval"><span id="eval-iii">0</span><span class="max"> / 30</span></div></div>
+    <div class="eval-card"><h3>Din oficiu</h3><div class="scor-eval">10<span class="max"> / 10</span></div></div>
+  </div>
+  <div class="total-final-box">
+    <h3>Total punctaj</h3>
+    <div class="total-mare"><span id="total-puncte">10</span><span class="max"> / 100</span></div>
+    <div class="nota-finala">Nota finală:<strong id="nota-finala">1,00</strong></div>
+    <div class="mesaj" id="mesaj-final">Introdu punctajele pentru a calcula nota.</div>
+  </div>
+  <table class="tabel-final">
+    <thead><tr><th>Cerință</th><th>Maxim</th><th>Obținut</th></tr></thead>
+    <tbody>
+      <tr><td>Subiectul I</td><td>30</td><td class="scor-cell" id="row-i">0</td></tr>
+      <tr><td>Subiectul al II-lea</td><td>30</td><td class="scor-cell" id="row-ii">0</td></tr>
+      <tr><td>Subiectul al III-lea</td><td>30</td><td class="scor-cell" id="row-iii">0</td></tr>
+      <tr><td>Oficiu</td><td>10</td><td class="scor-cell">10</td></tr>
+    </tbody>
+    <tfoot><tr><td>TOTAL</td><td>100</td><td class="scor-cell" id="row-total">10</td></tr></tfoot>
+  </table>
+</section>
+
+<!-- ══════════════ CORECTURĂ MARIA (profesor) ══════════════ -->
+<section id="t5" class="tab-content">
+  <h2 class="subiect-titlu">Caseta de Corectură — Profesor</h2>
+  <span class="puncte-total">română academică</span>
+  <div class="maria-intro">
+    <h3>Spațiu de corectură pentru răspunsurile deschise</h3>
+    <p>Răspunsurile elevului la Subiectele al II-lea și al III-lea apar mai jos preluate automat. Scrieți observațiile și punctajul acordat. Totalurile se propagă automat în Evaluare.</p>
+  </div>
+
+  <div class="corectare-item">
+    <h4>A.I — Tema <span class="puncte-cerinta">6p</span></h4>
+    <div class="raspuns-elev" id="rd-ai"><span class="eticheta">Răspunsul elevului</span></div>
+    <div class="barem-mini"><strong>Barem:</strong> tema (2p) + justificare din text (4p)</div>
+    <div class="marcaje-corectura">
+      <span class="marcaje-label">Insert rapid:</span>
+      <button class="marcaj" data-text="[temă corectă]" data-tid="cor-ai">temă OK</button>
+      <button class="marcaj" data-text="[justificare insuficientă]" data-tid="cor-ai">justif. slabă</button>
+      <button class="marcaj" data-text="[lipsește referirea la text]" data-tid="cor-ai">fără text</button>
+      <button class="marcaj" data-text="[acord]" data-tid="cor-ai">acord</button>
+      <button class="marcaj" data-text="[diacritice]" data-tid="cor-ai">diacritice</button>
+    </div>
+    <div class="corectura-box"><label>Observații (română academică)</label><textarea id="cor-ai" placeholder="Ex.: Răspunsul identifică tema integrității morale, însă justificarea este sumară…"></textarea></div>
+    <div class="scor-acordat"><label>Punctaj:</label><input type="number" id="punct-ai" min="0" max="6" step="0.5" value="0"><span class="max-info">/ 6p</span></div>
+  </div>
+
+  <div class="corectare-item">
+    <h4>A.II — Trăsătură personaj <span class="puncte-cerinta">6p</span></h4>
+    <div class="raspuns-elev" id="rd-aii"><span class="eticheta">Răspunsul elevului</span></div>
+    <div class="barem-mini"><strong>Barem:</strong> trăsătură (2p) + mijloc (1p) + prezentare min. 30 cuvinte (3p)</div>
+    <div class="marcaje-corectura">
+      <span class="marcaje-label">Insert rapid:</span>
+      <button class="marcaj" data-text="[trăsătură adecvată]" data-tid="cor-aii">trăsătură OK</button>
+      <button class="marcaj" data-text="[mijloc de caracterizare absent]" data-tid="cor-aii">fără mijloc</button>
+      <button class="marcaj" data-text="[caracterizare indirectă — fapte și replici]" data-tid="cor-aii">caract. indir.</button>
+      <button class="marcaj" data-text="[sub 30 cuvinte]" data-tid="cor-aii">prea scurt</button>
+      <button class="marcaj" data-text="[acord]" data-tid="cor-aii">acord</button>
+    </div>
+    <div class="corectura-box"><label>Observații (română academică)</label><textarea id="cor-aii" placeholder="Ex.: Trăsătura propusă este pertinentă și susținută prin caracterizare indirectă…"></textarea></div>
+    <div class="scor-acordat"><label>Punctaj:</label><input type="number" id="punct-aii" min="0" max="6" step="0.5" value="0"><span class="max-info">/ 6p</span></div>
+  </div>
+
+  <div class="corectare-item">
+    <h4>B — Text argumentativ <span class="puncte-cerinta">18p</span></h4>
+    <div class="raspuns-elev" id="rd-b"><span class="eticheta">Răspunsul elevului</span></div>
+    <div class="barem-mini"><strong>Barem:</strong> ipoteză 1p · opinie 1p · 2 argumente 4p · dezvoltare 3p · exemplificare 3p · concluzie 2p · redactare 4p</div>
+    <div class="marcaje-corectura">
+      <span class="marcaje-label">Insert rapid:</span>
+      <button class="marcaj" data-text="[ipoteză clară]" data-tid="cor-b">ipoteză OK</button>
+      <button class="marcaj" data-text="[argument nedezvoltat]" data-tid="cor-b">arg. slab</button>
+      <button class="marcaj" data-text="[lipsește exemplificarea]" data-tid="cor-b">fără exemplu</button>
+      <button class="marcaj" data-text="[concluzie pertinentă]" data-tid="cor-b">concluzie OK</button>
+      <button class="marcaj" data-text="[conectori]" data-tid="cor-b">conectori</button>
+      <button class="marcaj" data-text="[acord]" data-tid="cor-b">acord</button>
+      <button class="marcaj" data-text="[articol]" data-tid="cor-b">articol</button>
+      <button class="marcaj" data-text="[diacritice]" data-tid="cor-b">diacritice</button>
+    </div>
+    <div class="corectura-box"><label>Observații (română academică)</label><textarea id="cor-b" placeholder="Ex.: Textul argumentativ formulează o ipoteză coerentă…"></textarea></div>
+    <div class="scor-acordat"><label>Punctaj:</label><input type="number" id="punct-b" min="0" max="18" step="0.5" value="0"><span class="max-info">/ 18p</span></div>
+  </div>
+
+  <div class="corectare-item">
+    <h4>Subiectul al III-lea — Eseu <span class="puncte-cerinta">30p</span></h4>
+    <div class="raspuns-elev" id="rd-eseu"><span class="eticheta">Răspunsul elevului</span></div>
+    <div class="barem-mini"><strong>Barem:</strong> conținut 22p (teorie 6p · comparație 6p · scene 6p · exp. culturală 4p) + redactare 8p</div>
+    <div class="marcaje-corectura">
+      <span class="marcaje-label">Insert rapid:</span>
+      <button class="marcaj" data-text="[introducere clară]" data-tid="cor-eseu">intro OK</button>
+      <button class="marcaj" data-text="[teorie literară corectă]" data-tid="cor-eseu">teorie OK</button>
+      <button class="marcaj" data-text="[lipsește specia/curentul]" data-tid="cor-eseu">fără specie</button>
+      <button class="marcaj" data-text="[comparație superficială]" data-tid="cor-eseu">comp. slabă</button>
+      <button class="marcaj" data-text="[scenă bine aleasă]" data-tid="cor-eseu">scenă OK</button>
+      <button class="marcaj" data-text="[lipsește exp. culturală]" data-tid="cor-eseu">fără exp.</button>
+      <button class="marcaj" data-text="[acord]" data-tid="cor-eseu">acord</button>
+      <button class="marcaj" data-text="[articol]" data-tid="cor-eseu">articol</button>
+      <button class="marcaj" data-text="[diacritice]" data-tid="cor-eseu">diacritice</button>
+      <button class="marcaj" data-text="[sub 300 cuvinte]" data-tid="cor-eseu">prea scurt</button>
+    </div>
+    <div class="corectura-box"><label>Observații (română academică)</label><textarea id="cor-eseu" style="min-height:160px" placeholder="Ex.: Eseul propune o lectură comparată pertinentă…"></textarea></div>
+    <div class="scor-acordat"><label>Punctaj:</label><input type="number" id="punct-eseu" min="0" max="30" step="0.5" value="0"><span class="max-info">/ 30p</span></div>
+  </div>
+
+  <div class="observatii-generale">
+    <h4>Observații generale și recomandări pentru elev</h4>
+    <textarea id="obs-generale" placeholder="Sinteză: progrese, dificultăți recurente (interferențe maghiară-română), recomandări pentru BAC L2…"></textarea>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<button class="btn-pdf-fix" id="btn-pdf">Salvează PDF</button>
+
+<script>
+(function(){
+
+/* ── Cheia API e securizată pe serverul Vercel — elevii nu introduc nimic ── */
+let ANTHROPIC_API_KEY = 'pe-server';
+
+setApiStatusSafe(true);
+
+function setApiStatusSafe(activ){
+  const dot = document.getElementById('api-dot');
+  const txt = document.getElementById('api-status-text');
+  if(!dot||!txt) return;
+  if(activ){ dot.classList.add('activ'); txt.textContent='— cheie activă ✓'; }
+  else { dot.classList.remove('activ'); txt.textContent='— introduceți cheia Google AI Studio'; }
+}
+
+function setApiStatus(activ){ setApiStatusSafe(activ); }
+document.getElementById('api-toggle').addEventListener('click',()=>{
+  document.getElementById('api-config').classList.toggle('deschis');
+});
+document.getElementById('btn-api-save').addEventListener('click',()=>{
+  const val=document.getElementById('api-key-input').value.trim();
+  if(val.startsWith('AIza') || val.length > 20){
+    ANTHROPIC_API_KEY=val; setApiStatus(true);
+    document.getElementById('api-config').classList.remove('deschis');
+  } else { alert('Cheia Google AI Studio începe cu „AIza". Verificați și reintroduceți.'); }
+});
+document.getElementById('btn-api-clear').addEventListener('click',()=>{
+  ANTHROPIC_API_KEY=''; document.getElementById('api-key-input').value=''; setApiStatus(false);
+});
+
+/* ── TABS ── */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const id=btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(id==='t4'||id==='t5') syncRaspunsuri();
+  });
+});
+
+/* ── WORD COUNTERS ── */
+document.querySelectorAll('.word-count').forEach(cnt=>{
+  const id=cnt.dataset.target, min=parseInt(cnt.dataset.min)||0;
+  const ta=document.getElementById(id); if(!ta)return;
+  const upd=()=>{
+    const n=ta.value.trim()===''?0:ta.value.trim().split(/\s+/).length;
+    cnt.textContent=n+' cuvinte'+(min?' (minimum '+min+')':'');
+    cnt.classList.toggle('below',min>0&&n<min);
+    cnt.classList.toggle('met',min>0&&n>=min);
+  };
+  ta.addEventListener('input',upd); upd();
+});
+
+/* ── SUBIECTUL I — auto-corectare ── */
+const CORECT={
+  i1:'b',
+  i2:{a:'A',b:'F',c:'A',d:'F'},
+  i3:{1:'c',2:'b',3:'a',4:'e'},
+  i4:{5:['cele'],6:['cei'],7:['care'],8:['ale noului']}
+};
+function radio(n){const e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:null}
+function norm(s){return(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
+
+document.getElementById('btn-verifica-i').addEventListener('click',()=>{
+  let scor=0; const det=[];
+  const push=(c,ok,re,rc,p,m)=>det.push({c,ok,re,rc,p,m});
+  const r1=radio('i1'); const ok1=r1===CORECT.i1; if(ok1)scor+=6;
+  push('I.1',ok1,r1||'—',CORECT.i1,ok1?6:0,6);
+  ['a','b','c','d'].forEach(l=>{const r=radio('i2'+l),ok=r===CORECT.i2[l];if(ok)scor+=2;push('I.2.'+l,ok,r||'—',CORECT.i2[l],ok?2:0,2)});
+  for(let i=1;i<=4;i++){const s=document.querySelector('select[name="i3-'+i+'"]'),r=s?s.value:'',ok=r===CORECT.i3[i];if(ok)scor+=2;push('I.3.('+i+')',ok,r||'—',CORECT.i3[i],ok?2:0,2)}
+  for(let i=5;i<=8;i++){const inp=document.querySelector('input[name="i4-'+i+'"]'),r=norm(inp?inp.value:''),vs=CORECT.i4[i].map(norm),ok=vs.includes(r);if(ok)scor+=2;push('I.4.('+i+')',ok,inp?inp.value:'—',CORECT.i4[i].join(' / '),ok?2:0,2)}
+  document.getElementById('scor-i').textContent=scor;
+  const dc=document.getElementById('detalii-i'); dc.innerHTML='';
+  det.forEach(d=>{
+    const div=document.createElement('div');
+    div.className='item-rezultat '+(d.ok?'corect':'gresit');
+    div.innerHTML='<span class="icon">'+(d.ok?'✓':'✗')+'</span><span class="nume">'+d.c+'</span><span>răspuns: <span class="raspuns-elev-mini">'+d.re+'</span></span>'+(d.ok?'':'<span>· corect: <span class="raspuns-corect-mini">'+d.rc+'</span></span>')+'<span style="margin-left:auto;font-weight:700;color:var(--navy)">'+d.p+'/'+d.m+'p</span>';
+    dc.appendChild(div);
+  });
+  document.getElementById('rez-i').classList.add('afisat');
+  document.getElementById('eval-i').textContent=scor;
+  document.getElementById('row-i').textContent=scor;
+  recalc();
+});
+
+/* ── BAREM TOGGLES ── */
+[['btn-barem-i','barem-i'],['btn-barem-ii','barem-ii'],['btn-barem-iii','barem-iii']].forEach(([b,p])=>{
+  const btn=document.getElementById(b), panel=document.getElementById(p);
+  if(!btn||!panel)return;
+  const orig=btn.textContent;
+  btn.addEventListener('click',()=>{
+    const open=panel.classList.toggle('afisat');
+    btn.textContent=open?'Ascunde baremul':orig;
+  });
+});
+
+/* ── SYNC RĂSPUNSURI → TAB 5 ── */
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function syncRaspunsuri(){
+  [['ai','rd-ai'],['aii','rd-aii'],['b','rd-b'],['eseu','rd-eseu']].forEach(([ta,dst])=>{
+    const t=document.getElementById(ta), d=document.getElementById(dst); if(!t||!d)return;
+    const txt=t.value.trim();
+    d.innerHTML='<span class="eticheta">Răspunsul elevului</span>'+(txt?esc(txt):'');
+  });
+}
+
+/* ── MARCAJE RAPIDE (tab 5) ── */
+document.querySelectorAll('.marcaj').forEach(m=>{
+  m.addEventListener('click',()=>{
+    const ta=document.getElementById(m.dataset.tid); if(!ta)return;
+    const txt=m.dataset.text, s=ta.selectionStart??ta.value.length, e=ta.selectionEnd??ta.value.length;
+    const before=ta.value.substring(0,s), after=ta.value.substring(e);
+    const ins=(before&&!before.match(/[\s\n]$/)?' ':'')+txt+' ';
+    ta.value=before+ins+after; ta.focus(); ta.setSelectionRange(before.length+ins.length,before.length+ins.length);
+  });
+});
+
+/* ── PUNCTAJE MANUALE → EVALUARE ── */
+function recalc(){
+  const ii=Math.min(['punct-ai','punct-aii','punct-b'].reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0),30);
+  const iii=Math.min(parseFloat(document.getElementById('punct-eseu').value)||0,30);
+  const i=parseInt(document.getElementById('eval-i').textContent)||0;
+  const tot=i+ii+iii+10;
+  document.getElementById('eval-ii').textContent=ii;
+  document.getElementById('eval-iii').textContent=iii;
+  document.getElementById('row-ii').textContent=ii;
+  document.getElementById('row-iii').textContent=iii;
+  document.getElementById('row-total').textContent=tot;
+  document.getElementById('total-puncte').textContent=tot;
+  document.getElementById('nota-finala').textContent=(tot/10).toFixed(2).replace('.',',');
+  const m=document.getElementById('mesaj-final');
+  m.textContent=tot>=90?'Foarte bine — performanță excelentă.':tot>=70?'Bine — competențe solide.':tot>=50?'Suficient — promovat.':'Insuficient — continuă pregătirea.';
+}
+['punct-ai','punct-aii','punct-b','punct-eseu'].forEach(id=>document.getElementById(id).addEventListener('input',recalc));
+recalc();
+
+/* ── PDF ── */
+document.getElementById('btn-pdf').addEventListener('click',()=>{syncRaspunsuri();recalc();window.print()});
+
+/* ══════════════════════════════════════════════
+   MARIA PEDAGOG VIRTUAL — buton „Ajută-mă"
+   Răspunde pedagogic: laudă + corectează cu
+   explicație clară + ghidează mai departe.
+══════════════════════════════════════════════ */
+
+const MARIA_PROMPT =
+  'Ești Maria, profesoară de limba și literatura română, specializată în RLNM pentru elevi maghiari, nivel B1-B2+.\n\n' +
+  'Când primești un text scris de elev, răspunzi în română, cald și direct, astfel:\n\n' +
+  '✓ CE AI SCRIS BINE:\n' +
+  'Numești concret ce funcționează în textul elevului.\n\n' +
+  '✏ CORECTEAZĂ:\n' +
+  'Pentru fiecare greșeală scrii pe rând:\n' +
+  '— „[greșit]" → „[corect]" — De ce: explicație simplă\n\n' +
+  '💡 SUGESTIE:\n' +
+  'Un sfat concret pentru îmbunătățire.\n\n' +
+  'Închei cu un rând de încurajare.\n\n' +
+  'GREȘELI FRECVENTE la elevii maghiari:\n' +
+  '- Pronume de gen: El când referentul e feminin (Florina) → Ea\n' +
+  '- Acord: un fată, o student → forma corectă\n' +
+  '- Articol hotărât absent: carte → cartea, elev → elevul\n' +
+  '- Diacritice lipsă: s→ș, t→ț, a→ă, a→â\n' +
+  '- Timp verbal: a fost când relația e prezentă → este\n' +
+  '- Conectori lipsă în argumentativ și eseu\n\n' +
+  'TEME BAC Subiectul III: Experiențe fundamentale ale existenței / Subiect și alteritate / Tradiție și modernitate.\n' +
+  'STRUCTURA ESEULUI: teorie literară (6p) + scene semnificative (6p) + comparație asemănare/deosebire (6p) + valorificarea experienței culturale DISTINCT (4p).\n\n' +
+  'ADRESARE: folosești tu. Niciodată numele personajelor ca apelativ pentru elev.\n' +
+  'LIMBĂ: exclusiv română literară.';
+
+/* Parser robust — curăță răspunsul modelului înainte de JSON.parse.
+   Modelul poate întoarce: bloc markdown, newline-uri neescape-uite în
+   string-uri, ghilimele inteligente sau text înainte/după JSON. */
+function fixUnescapedQuotes(s){
+  /* Parcurgem caracterele și închidem ghilimelele interne dintr-un
+     string JSON. O ghilimea de închidere legitimă e urmată de
+     : , } ] sau whitespace + acestea. Orice altceva e o ghilimea
+     internă neescape-uită → o înlocuim cu apostrof. */
+  let out='', inStr=false, i=0;
+  while(i<s.length){
+    const ch=s[i];
+    if(ch==='\\'&&inStr){ out+=ch+s[i+1]; i+=2; continue; }
+    if(ch==='"'){
+      if(!inStr){ inStr=true; out+=ch; i++; continue; }
+      // e ghilimea de închidere?
+      let j=i+1;
+      while(j<s.length&&(s[j]===' '||s[j]==='\t')) j++;
+      const nxt=s[j];
+      if(nxt===':'||nxt===','||nxt==='}'||nxt===']'||j>=s.length){
+        inStr=false; out+=ch;
+      } else {
+        out+="'"; // ghilimea internă → apostrof
+      }
+      i++; continue;
+    }
+    out+=ch; i++;
+  }
+  return out;
+}
+
+function parseMariaJSON(raw){
+  // 1. eliminăm blocuri markdown
+  let s=raw.replace(/```json/gi,'').replace(/```/g,'').trim();
+  // 2. extragem primul obiect JSON complet
+  const st=s.indexOf('{'), en=s.lastIndexOf('}');
+  if(st===-1||en===-1) throw new Error('Niciun JSON în răspuns');
+  s=s.slice(st,en+1);
+  // 3. ghilimele curbe → drepte
+  s=s.replace(/[\u201C\u201D\u201E\u201F]/g,'"').replace(/[\u2018\u2019\u201B]/g,"'");
+  // 4. newline-uri reale → spații
+  s=s.replace(/\r\n/g,' ').replace(/\n/g,' ').replace(/\r/g,' ');
+  // 5. tentativă directă
+  try{ return JSON.parse(s); }catch(_){}
+  // 6. reparăm ghilimelele interne neescape-uite
+  s=fixUnescapedQuotes(s);
+  try{ return JSON.parse(s); }catch(_){}
+  // 7. eliminăm caractere de control rămase
+  s=s.replace(/[\x00-\x1F\x7F]/g,' ');
+  return JSON.parse(s);
+}
+
+function apHeader(){
+  return '<div class="ap-header"><div class="ap-avatar">M</div><div class="ap-titlu">Maria — te ajut!<span class="ap-subtitlu">profesor virtual · RLNM B1+</span></div></div>';
+}
+
+async function mariaAjuta(btn){
+  const taId = btn.getAttribute('data-ta');
+  const ctx  = btn.getAttribute('data-context');
+  const panel= document.getElementById('ap-'+taId);
+  const ta   = document.getElementById(taId);
+  if(!panel||!ta) return;
+
+  const text = ta.value.trim();
+  if(text.split(/\s+/).filter(Boolean).length < 3){
+    panel.classList.add('vizibil');
+    panel.innerHTML = apHeader()+'<div class="ap-body"><div class="ap-incurajare">Scrie cel puțin o propoziție și eu te ajut imediat!</div></div>';
+    return;
+  }
+
+  btn.disabled=true; btn.classList.add('loading');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<span class="ico">⏳</span> Maria citește…';
+  panel.classList.add('vizibil');
+  panel.innerHTML=apHeader()+'<div class="ap-body"><div class="ap-loading"><div class="ap-spinner"></div>Maria analizează ce ai scris…</div></div>';
+
+  try{
+    const GEMMA_MODEL = 'gemma-4-26b-a4b-it';
+    const apiKey = ANTHROPIC_API_KEY;
+    
+    const endpoint = '/api/chat';
+
+    let resp, tentativa = 0;
+    while(tentativa < 2){
+      resp = await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text: MARIA_PROMPT}]},
+          contents:[{role:'user', parts:[{text:'Context cerință: '+ctx+'\n\nCe a scris elevul:\n'+text}]}],
+          generationConfig:{
+            maxOutputTokens:1200,
+            temperature:0.7,
+            
+          }
+        })
+      });
+      if(resp.ok || resp.status < 500) break;
+      tentativa++;
+      await new Promise(r=>setTimeout(r, 1200 * tentativa));
+    }
+    const data=await resp.json();
+    if(data.error) throw new Error(data.error.message||'Eroare API Google');
+    /* filtrăm doar parts-urile finale, nu thinking tokens */
+    const parts = data.candidates?.[0]?.content?.parts||[];
+    const raw = parts
+      .filter(p => !p.thought)
+      .map(p => p.text||'')
+      .join('').trim();
+    if(!raw) throw new Error('Gemma nu a returnat niciun răspuns');
+
+    /* afișăm textul direct — fără JSON */
+    const formatat = raw.split('\n').map(l=>{
+      const t=l.trim(); if(!t) return '<br>';
+      if(t.startsWith('✓')) return '<div class="ap-tari" style="margin:8px 0"><div class="ap-tari-titlu">'+esc(t)+'</div></div>';
+      if(t.startsWith('✏')) return '<div class="ap-corectii-titlu" style="margin-top:12px">'+esc(t)+'</div>';
+      if(t.startsWith('💡')) return '<div class="ap-sugestie">'+esc(t.replace('💡','').trim())+'</div>';
+      if(t.startsWith('—')) return '<div class="cor-card" style="margin:6px 0;padding:8px 12px;font-size:14px">'+esc(t)+'</div>';
+      if(t.startsWith('**')&&t.endsWith('**')) return '<div class="ap-corectii-titlu" style="margin-top:10px">'+esc(t.replace(/\*\*/g,''))+'</div>';
+      return '<p style="margin:4px 0;font-size:14px;line-height:1.6">'+esc(t)+'</p>';
+    }).join('');
+
+    let body='<div class="ap-body">'+formatat;
+
+    if(taId==='eseu'){
+      body+='<div class="model-eseu-wrapper">'+
+        '<p class="model-eseu-intro">Ai văzut corectura. Acum poți vedea un eseu model pe textele tale.</p>'+
+        '<button class="btn-model-eseu" id="btn-gen-model">📝 Generează model de eseu</button>'+
+        '<div id="model-eseu-rezultat"></div>'+
+      '</div>';
+    }
+    body+='</div>';
+    panel.innerHTML=apHeader()+body;
+    const btnModel=document.getElementById('btn-gen-model');
+    if(btnModel) btnModel.addEventListener('click',()=>mariaGenereazaModel(text, btnModel));
+
+  } catch(err){
+    console.error('Maria error:', err);
+    const isFetch = String(err).includes('fetch') || String(err).includes('network') || String(err).includes('Failed');
+    const msg = isFetch
+      ? 'Conexiune refuzată. Introduceți cheia Google AI Studio în panoul de configurare de mai sus.'
+      : (err.message||String(err));
+    panel.innerHTML=apHeader()+'<div class="ap-body"><div class="ap-eroare">⚠ Maria nu a putut răspunde.<br><br>'+esc(msg)+'</div></div>';
+  } finally {
+    btn.disabled=false; btn.classList.remove('loading'); btn.innerHTML=orig;
+  }
+}
+
+document.querySelectorAll('.btn-ajuta').forEach(btn=>{
+  btn.addEventListener('click',function(){mariaAjuta(this)});
+});
+
+/* ══════════════════════════════════════════════
+   MARIA — GENERARE MODEL DE ESEU
+   Apare doar după corectura lingvistică la III.
+   Maria citește textul elevului, identifică
+   textele alese și generează un eseu model
+   adaptat exact pe acele texte și temă.
+══════════════════════════════════════════════ */
+
+const MARIA_MODEL_PROMPT =
+  'Ești Maria, profesoară de limba și literatura română, specializată în RLNM pentru elevi maghiari B1+.\n\n' +
+  'Ai citit eseul elevului. Acum generezi un MODEL DE ESEU complet pe aceeași temă BAC, folosind EXACT ACELEAȘI texte pe care le-a ales elevul (pe care le identifici din eseul lui).\n\n' +
+  'Modelul arată cum arată un eseu de nota 8-9, corect structurat, cu toate elementele din barem. Nu e un eseu perfect academic — e un model realist pentru un elev de liceu, nivel B1+.\n\n' +
+  'STRUCTURA OBLIGATORIE — exact 6 elemente, marcate clar:\n' +
+  'INTRODUCERE: definești tema și anunți textele alese (3-4 propoziții)\n' +
+  'TEXT 1: element de teorie literară (specie/gen/curent) + scenă semnificativă + cum reflectă tema\n' +
+  'TEXT 2: tip de text sau discurs + secvență semnificativă + cum reflectă tema\n' +
+  'COMPARAȚIE: o ASEMĂNARE și o DEOSEBIRE între cele două texte în reflectarea temei\n' +
+  'VALORIFICAREA EXPERIENȚEI CULTURALE: raportezi tema la experiența culturală mai largă — alte lecturi, filme, muzică, evenimente istorice sau personale care se leagă de temă (element distinct, 4 puncte în barem, NU inclus în încheiere)\n' +
+  'ÎNCHEIERE: concluzie care reia tema și importanța ei (3-4 propoziții)\n\n' +
+  'REGULI:\n' +
+  '- Minimum 350 de cuvinte\n' +
+  '- Română literară corectă, accesibilă pentru B1+\n' +
+  '- Dacă nu poți identifica textele din eseul elevului, folosești: Eminescu (Luceafarul) + fragmentul din Ileana Vulpescu (Pe apa Sambetei)\n' +
+  '- NU JSON — răspunzi cu textul eseului direct, cu secțiunile marcate clar\n' +
+  '- Adresare: nicio adresare directă către elev în eseu\n' +
+  '- La final adaugi o linie separată: MODEL GENERAT DE MARIA-PEDAGOG';
+
+async function mariaGenereazaModel(textElev, btn){
+  const rezultat = document.getElementById('model-eseu-rezultat');
+  if(!rezultat) return;
+
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Maria scrie modelul…';
+  rezultat.innerHTML = '<div class="model-loading"><div class="ap-spinner"></div>Maria redactează eseul model — poate dura 15-20 de secunde…</div>';
+
+  try{
+    const GEMMA_MODEL = 'gemma-4-26b-a4b-it';
+    const apiKey = ANTHROPIC_API_KEY;
+    
+    const endpoint = '/api/chat';
+
+    let resp, tentativa = 0;
+    while(tentativa < 2){
+      resp = await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          system_instruction:{parts:[{text: MARIA_MODEL_PROMPT}]},
+          contents:[{role:'user', parts:[{text:'Eseul elevului:\n\n'+textElev}]}],
+          generationConfig:{maxOutputTokens:2000, temperature:0.7}
+        })
+      });
+      if(resp.ok || resp.status < 500) break;
+      tentativa++;
+      await new Promise(r=>setTimeout(r, 1500 * tentativa));
+    }
+
+    const data = await resp.json();
+    if(data.error) throw new Error(data.error.message||'Eroare API Google');
+    const parts2 = data.candidates?.[0]?.content?.parts||[];
+    const eseuModel = parts2.filter(p=>!p.thought).map(p=>p.text||'').join('').trim();
+
+    /* formatăm textul: marcajele de secțiune devin headere vizuale */
+    const formatat = eseuModel
+      .split('\n')
+      .map(linie => {
+        const l = linie.trim();
+        if(!l) return '<br>';
+        if(l.startsWith('INTRODUCERE') || l.startsWith('CUPRINS') || l.startsWith('ÎNCHEIERE') || l.startsWith('MODEL GENERAT'))
+          return '<div class="model-sectiune-titlu">'+esc(l)+'</div>';
+        return '<p class="model-paragraf">'+esc(l)+'</p>';
+      })
+      .join('');
+
+    rezultat.innerHTML =
+      '<div class="model-eseu-container">'+
+        '<div class="model-eseu-header">'+
+          '<span class="model-eseu-badge">Model de eseu — Maria-pedagog</span>'+
+          '<span class="model-eseu-nota">referință · nota 8–9</span>'+
+        '</div>'+
+        '<div class="model-eseu-text">'+formatat+'</div>'+
+        '<p class="model-eseu-nota-final">Compară cu eseul tău — observă structura, conectorii și modul în care tema este ilustrată în fiecare text.</p>'+
+      '</div>';
+
+    btn.innerHTML = '🔄 Regenerează modelul';
+    btn.disabled = false;
+
+  } catch(err){
+    console.error('Model eseu error:', err);
+    rezultat.innerHTML = '<div class="ap-eroare">⚠ Nu am putut genera modelul. Încearcă din nou.<br><small>'+esc(String(err))+'</small></div>';
+    btn.innerHTML = orig;
+    btn.disabled = false;
+  }
+}
+
+})();
+</script>
+</body>
+</html>
