@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maria-pedagog AI · Powered by Gemma — BAC Română L2</title>
+<title>Maria-Pedagog · Antrenament BAC Română L2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap');
 
@@ -676,25 +676,17 @@ textarea.argumentativ{min-height:190px}
   </ul>
 </div>
 
-<!-- CONFIGURARE CHEIE API Google AI Studio -->
-<div class="api-config deschis" id="api-config">
-  <div class="api-config-header" id="api-toggle">
-    <span class="api-status-dot" id="api-dot"></span>
-    <strong>Maria-pedagog · Gemma</strong>
-    <span id="api-status-text">— introduceți cheia Google AI Studio</span>
-    <span class="api-toggle-arrow">▸</span>
-  </div>
-  <div class="api-config-body" id="api-body">
-    <p class="api-info">Introduceți cheia API de la <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Cheia dispare la închiderea paginii.</p>
-    <div class="api-input-row">
-      <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="off" spellcheck="false">
-      <button class="btn-api-save" id="btn-api-save">Salvează</button>
-      <button class="btn-api-clear" id="btn-api-clear">Șterge</button>
-    </div>
-    <p class="api-nota">Powered by Gemma · Google AI Studio · Gemma 4 Good Hackathon 2025</p>
-  </div>
-</div>
+<!-- STARE CORECTARE AI: FARA CHEI LA ELEV -->
+<div class="api-config" id="api-config" aria-live="polite"><div class="api-config-header">
+<span class="api-status-dot" id="api-dot"></span><strong>Maria-Pedagog · antrenament BAC</strong>
+<span id="api-status-text">Verific disponibilitatea corectării AI...</span></div></div>
 
+<div class="api-config" style="padding:14px;margin:12px 0" aria-label="Salvare progres">
+ <strong>Progresul antrenamentului</strong>
+ <label style="display:block;margin:7px 0;font-size:14px"><input type="checkbox" id="maria-save-enabled"> Păstrează răspunsurile pe acest dispozitiv</label>
+ <button type="button" id="maria-save-clear" style="padding:6px 12px">Șterge progresul salvat</button>
+ <p id="maria-save-status" aria-live="polite" style="font-size:12px;margin:6px 0">Salvarea este dezactivată. Nu o activa pe un calculator comun.</p>
+</div>
 <!-- TAB NAV -->
 <div class="tabs" role="tablist">
   <button class="tab-btn active" data-tab="t1">Subiectul I<span class="puncte">30 puncte</span></button>
@@ -887,7 +879,7 @@ textarea.argumentativ{min-height:190px}
       <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
       <button class="btn-ajuta" id="baj-ai"
         data-ta="ai"
-        data-context="Cerinta A.I, Subiectul al II-lea, BAC L2 RLNM B1+: precizarea altei teme din fragmentul romanului Pe apa Sambetei de Ileana Vulpescu (personaj: Florina, tehniciana dentara, integra moral), cu justificare in 2-3 enunturi. TEMELE OFICIALE BAC sunt exact trei: (1) Experiente fundamentale ale existentei, (2) Subiect si alteritate, (3) Traditie si modernitate. Elevul este vorbitor nativ de maghiara care invata romana.">
+        data-context="Cerința A.I, Subiectul al II-lea, BAC L2 RLNM B1+: precizarea altei teme din fragmentul romanului Pe apa Sâmbetei de Ileana Vulpescu (personaj: Florina, tehniciană dentară, integră moral), cu justificare în 2-3 enunțuri. TEMELE OFICIALE BAC sunt exact trei: (1) Experiențe fundamentale ale existenței, (2) Subiect și alteritate, (3) Tradiție și modernitate. Elevul este vorbitor nativ de maghiară care învață româna.">
         <span class="ico">🎓</span> Ajută-mă
       </button>
       <div class="ajuta-panel" id="ap-ai"></div>
@@ -914,7 +906,7 @@ textarea.argumentativ{min-height:190px}
       <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
       <button class="btn-ajuta" id="baj-aii"
         data-ta="aii"
-        data-context="Cerinta A.II, Subiectul al II-lea, BAC L2 RLNM B1+: prezentarea unei trasaturi a personajului feminin Florina (tehniciana dentara) din Pe apa Sambetei, cu mijlocul de caracterizare, minimum 30 de cuvinte. TEMELE OFICIALE BAC sunt: (1) Experiente fundamentale, (2) Subiect si alteritate, (3) Traditie si modernitate. Elevul vorbitor nativ de maghiara.">
+        data-context="Cerința A.II, Subiectul al II-lea, BAC L2 RLNM B1+: prezentarea unei trăsături a personajului feminin Florina (tehniciană dentară) din Pe apa Sâmbetei, cu mijlocul de caracterizare, minimum 30 de cuvinte. TEMELE OFICIALE BAC sunt: (1) Experiențe fundamentale, (2) Subiect și alteritate, (3) Tradiție și modernitate. Elevul este vorbitor nativ de maghiară.">
         <span class="ico">🎓</span> Ajută-mă
       </button>
       <div class="ajuta-panel" id="ap-aii"></div>
@@ -946,7 +938,7 @@ textarea.argumentativ{min-height:190px}
       <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
       <button class="btn-ajuta" id="baj-b"
         data-ta="b"
-        data-context="Cerinta B, Subiectul al II-lea, BAC L2 RLNM B1+: text argumentativ (min 100 cuvinte) despre importanta seriozitati la locul de munca. Structura CORECTA BAC: (1) Ipoteza — formularea problemei, (2) Opinie — pozitia elevului imediat dupa ipoteza, (3) Argument 1 cu exemplificare, (4) Argument 2 cu exemplificare, (5) Concluzie. Ipoteza si Opinia sunt doua elemente distincte, nu unul singur. Verifica daca elevul a formulat AMBELE: ipoteza ca intrebare sau enunt neutru, si opinia ca pozitie clara. Elevul vorbitor nativ de maghiara, romana L2 nivel B1+.">
+        data-context="Cerința B, Subiectul al II-lea, BAC L2 RLNM B1+: text argumentativ (minimum 100 de cuvinte) despre importanța seriozității la locul de muncă. Structura CORECTĂ BAC: (1) Ipoteza — formularea problemei, (2) Opinia — poziția elevului imediat după ipoteză, (3) Argumentul 1 cu exemplificare, (4) Argumentul 2 cu exemplificare, (5) Concluzia. Ipoteza și opinia sunt două elemente distincte, nu unul singur. Verifică dacă elevul a formulat AMBELE: ipoteza ca întrebare sau enunț neutru și opinia ca poziție clară. Elevul este vorbitor nativ de maghiară, română L2 nivel B1+.">
         <span class="ico">🎓</span> Ajută-mă
       </button>
       <div class="ajuta-panel" id="ap-b"></div>
@@ -1009,7 +1001,7 @@ textarea.argumentativ{min-height:190px}
       <p class="ajuta-indicatie">Apasă <strong>Ajută-mă</strong> oricând — după primul enunț sau după ce termini. Maria îți arată ce ai greșit în română și de ce, și te ghidează mai departe.</p>
       <button class="btn-ajuta" id="baj-eseu"
         data-ta="eseu"
-        data-context="Subiectul III, BAC L2 RLNM B1+, eseu min 300 cuvinte. Tema: Experiente fundamentale ale existentei (sau Subiect si alteritate, sau Traditie si modernitate). Barem - 4 criterii: (1) Teorie literara pentru ambele texte - specie, gen, curent, tip de text, cu exemplu (6p); (2) Scene semnificative pentru fiecare text (6p); (3) Comparatie - o asemanare si o deosebire in reflectarea temei (6p); (4) Valorificarea experientei culturale - element DISTINCT, nu in incheiere (4p). Eseul valorifica un text literar studiat si unul din textele date. Elevul vorbitor nativ de maghiara, romana L2 B1+.">
+        data-context="Subiectul al III-lea, BAC L2 RLNM B1+, eseu de minimum 300 de cuvinte. Tema: Experiențe fundamentale ale existenței (sau Subiect și alteritate, sau Tradiție și modernitate). Barem - 4 criterii: (1) Teorie literară pentru ambele texte - specie, gen, curent, tip de text, cu exemplu (6p); (2) Scene semnificative pentru fiecare text (6p); (3) Comparație - o asemănare și o deosebire în reflectarea temei (6p); (4) Valorificarea experienței culturale - element DISTINCT, nu în încheiere (4p). Eseul valorifică un text literar studiat și unul dintre textele date. Elevul este vorbitor nativ de maghiară, română L2 B1+.">
         <span class="ico">🎓</span> Ajută-mă
       </button>
       <div class="ajuta-panel" id="ap-eseu"></div>
@@ -1154,33 +1146,18 @@ textarea.argumentativ{min-height:190px}
 <script>
 (function(){
 
-/* ── Cheia API e securizată pe serverul Vercel — elevii nu introduc nimic ── */
-let ANTHROPIC_API_KEY = 'pe-server';
-
-setApiStatusSafe(true);
-
-function setApiStatusSafe(activ){
-  const dot = document.getElementById('api-dot');
-  const txt = document.getElementById('api-status-text');
-  if(!dot||!txt) return;
-  if(activ){ dot.classList.add('activ'); txt.textContent='— cheie activă ✓'; }
-  else { dot.classList.remove('activ'); txt.textContent='— introduceți cheia Google AI Studio'; }
+/* Secretul pentru AI ramane doar pe server. */
+async function verificaServiciu(){
+ const dot=document.getElementById('api-dot'),label=document.getElementById('api-status-text');
+ try{
+  const r=await fetch('/api/chat',{method:'GET',cache:'no-store'});
+  if(!r.ok)throw Error('offline');
+  const d=await r.json();
+  if(d.configured){dot.classList.add('activ');label.textContent='Corectarea AI este configurată. Verifică răspunsul.';}
+  else{dot.classList.remove('activ');label.textContent='Corectarea AI nu este activată. Subiectul I poate fi verificat.';}
+ }catch(e){dot.classList.remove('activ');label.textContent='Serviciul AI nu poate fi verificat. Subiectul I poate fi verificat.';}
 }
-
-function setApiStatus(activ){ setApiStatusSafe(activ); }
-document.getElementById('api-toggle').addEventListener('click',()=>{
-  document.getElementById('api-config').classList.toggle('deschis');
-});
-document.getElementById('btn-api-save').addEventListener('click',()=>{
-  const val=document.getElementById('api-key-input').value.trim();
-  if(val.startsWith('AIza') || val.length > 20){
-    ANTHROPIC_API_KEY=val; setApiStatus(true);
-    document.getElementById('api-config').classList.remove('deschis');
-  } else { alert('Cheia Google AI Studio începe cu „AIza". Verificați și reintroduceți.'); }
-});
-document.getElementById('btn-api-clear').addEventListener('click',()=>{
-  ANTHROPIC_API_KEY=''; document.getElementById('api-key-input').value=''; setApiStatus(false);
-});
+verificaServiciu();
 
 /* ── TABS ── */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -1231,7 +1208,7 @@ document.getElementById('btn-verifica-i').addEventListener('click',()=>{
   det.forEach(d=>{
     const div=document.createElement('div');
     div.className='item-rezultat '+(d.ok?'corect':'gresit');
-    div.innerHTML='<span class="icon">'+(d.ok?'✓':'✗')+'</span><span class="nume">'+d.c+'</span><span>răspuns: <span class="raspuns-elev-mini">'+d.re+'</span></span>'+(d.ok?'':'<span>· corect: <span class="raspuns-corect-mini">'+d.rc+'</span></span>')+'<span style="margin-left:auto;font-weight:700;color:var(--navy)">'+d.p+'/'+d.m+'p</span>';
+    div.innerHTML='<span class="icon">'+(d.ok?'✓':'✗')+'</span><span class="nume">'+d.c+'</span><span>răspuns: <span class="raspuns-elev-mini">'+esc(d.re)+'</span></span>'+(d.ok?'':'<span>· corect: <span class="raspuns-corect-mini">'+esc(d.rc)+'</span></span>')+'<span style="margin-left:auto;font-weight:700;color:var(--navy)">'+d.p+'/'+d.m+'p</span>';
     dc.appendChild(div);
   });
   document.getElementById('rez-i').classList.add('afisat');
@@ -1273,9 +1250,15 @@ document.querySelectorAll('.marcaj').forEach(m=>{
 });
 
 /* ── PUNCTAJE MANUALE → EVALUARE ── */
+/* Punctaj între 0 și maximul câmpului (fără valori negative sau peste barem). */
+function punct(id){
+  const el=document.getElementById(id), max=parseFloat(el.max)||0;
+  const v=parseFloat(String(el.value).replace(',','.'))||0;
+  return Math.min(Math.max(v,0),max);
+}
 function recalc(){
-  const ii=Math.min(['punct-ai','punct-aii','punct-b'].reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0),30);
-  const iii=Math.min(parseFloat(document.getElementById('punct-eseu').value)||0,30);
+  const ii=['punct-ai','punct-aii','punct-b'].reduce((s,id)=>s+punct(id),0);
+  const iii=punct('punct-eseu');
   const i=parseInt(document.getElementById('eval-i').textContent)||0;
   const tot=i+ii+iii+10;
   document.getElementById('eval-ii').textContent=ii;
@@ -1288,7 +1271,11 @@ function recalc(){
   const m=document.getElementById('mesaj-final');
   m.textContent=tot>=90?'Foarte bine — performanță excelentă.':tot>=70?'Bine — competențe solide.':tot>=50?'Suficient — promovat.':'Insuficient — continuă pregătirea.';
 }
-['punct-ai','punct-aii','punct-b','punct-eseu'].forEach(id=>document.getElementById(id).addEventListener('input',recalc));
+['punct-ai','punct-aii','punct-b','punct-eseu'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('input',recalc);
+  el.addEventListener('change',()=>{el.value=punct(id);recalc();});
+});
 recalc();
 
 /* ── PDF ── */
@@ -1300,28 +1287,7 @@ document.getElementById('btn-pdf').addEventListener('click',()=>{syncRaspunsuri(
    explicație clară + ghidează mai departe.
 ══════════════════════════════════════════════ */
 
-const MARIA_PROMPT =
-  'Ești Maria, profesoară de limba și literatura română, specializată în RLNM pentru elevi maghiari, nivel B1-B2+.\n\n' +
-  'Când primești un text scris de elev, răspunzi în română, cald și direct, astfel:\n\n' +
-  '✓ CE AI SCRIS BINE:\n' +
-  'Numești concret ce funcționează în textul elevului.\n\n' +
-  '✏ CORECTEAZĂ:\n' +
-  'Pentru fiecare greșeală scrii pe rând:\n' +
-  '— „[greșit]" → „[corect]" — De ce: explicație simplă\n\n' +
-  '💡 SUGESTIE:\n' +
-  'Un sfat concret pentru îmbunătățire.\n\n' +
-  'Închei cu un rând de încurajare.\n\n' +
-  'GREȘELI FRECVENTE la elevii maghiari:\n' +
-  '- Pronume de gen: El când referentul e feminin (Florina) → Ea\n' +
-  '- Acord: un fată, o student → forma corectă\n' +
-  '- Articol hotărât absent: carte → cartea, elev → elevul\n' +
-  '- Diacritice lipsă: s→ș, t→ț, a→ă, a→â\n' +
-  '- Timp verbal: a fost când relația e prezentă → este\n' +
-  '- Conectori lipsă în argumentativ și eseu\n\n' +
-  'TEME BAC Subiectul III: Experiențe fundamentale ale existenței / Subiect și alteritate / Tradiție și modernitate.\n' +
-  'STRUCTURA ESEULUI: teorie literară (6p) + scene semnificative (6p) + comparație asemănare/deosebire (6p) + valorificarea experienței culturale DISTINCT (4p).\n\n' +
-  'ADRESARE: folosești tu. Niciodată numele personajelor ca apelativ pentru elev.\n' +
-  'LIMBĂ: exclusiv română literară.';
+/* Corectarea respecta cerinta BAC si baremul. Regulile se afla pe server. */
 
 /* Parser robust — curăță răspunsul modelului înainte de JSON.parse.
    Modelul poate întoarce: bloc markdown, newline-uri neescape-uite în
@@ -1399,9 +1365,7 @@ async function mariaAjuta(btn){
   panel.innerHTML=apHeader()+'<div class="ap-body"><div class="ap-loading"><div class="ap-spinner"></div>Maria analizează ce ai scris…</div></div>';
 
   try{
-    const GEMMA_MODEL = 'gemma-4-26b-a4b-it';
-    const apiKey = ANTHROPIC_API_KEY;
-    
+
     const endpoint = '/api/chat';
 
     let resp, tentativa = 0;
@@ -1410,28 +1374,24 @@ async function mariaAjuta(btn){
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
-          system_instruction:{parts:[{text: MARIA_PROMPT}]},
-          contents:[{role:'user', parts:[{text:'Context cerință: '+ctx+'\n\nCe a scris elevul:\n'+text}]}],
-          generationConfig:{
-            maxOutputTokens:1200,
-            temperature:0.7,
-            
-          }
+          contents:[{role:'user', parts:[{text:'Context cerință: '+ctx+'\n\nCe a scris elevul:\n'+text}]}]
         })
       });
-      if(resp.ok || resp.status < 500) break;
+      /* Reîncercăm doar la o eroare trecătoare (502); la 503 (limită atinsă,
+         AI neconfigurat, timp depășit) o nouă cerere ar consuma inutil din cotă. */
+      if(resp.status !== 502) break;
       tentativa++;
       await new Promise(r=>setTimeout(r, 1200 * tentativa));
     }
-    const data=await resp.json();
-    if(data.error) throw new Error(data.error.message||'Eroare API Google');
+    const data=await resp.json().catch(()=>({}));
+    if(!resp.ok || data.error) throw new Error(data.error?.message||'Serviciul AI nu este disponibil');
     /* filtrăm doar parts-urile finale, nu thinking tokens */
     const parts = data.candidates?.[0]?.content?.parts||[];
     const raw = parts
       .filter(p => !p.thought)
       .map(p => p.text||'')
       .join('').trim();
-    if(!raw) throw new Error('Gemma nu a returnat niciun răspuns');
+    if(!raw) throw new Error('Serviciul AI nu a returnat feedback');
 
     /* afișăm textul direct — fără JSON */
     const formatat = raw.split('\n').map(l=>{
@@ -1446,23 +1406,14 @@ async function mariaAjuta(btn){
 
     let body='<div class="ap-body">'+formatat;
 
-    if(taId==='eseu'){
-      body+='<div class="model-eseu-wrapper">'+
-        '<p class="model-eseu-intro">Ai văzut corectura. Acum poți vedea un eseu model pe textele tale.</p>'+
-        '<button class="btn-model-eseu" id="btn-gen-model">📝 Generează model de eseu</button>'+
-        '<div id="model-eseu-rezultat"></div>'+
-      '</div>';
-    }
     body+='</div>';
     panel.innerHTML=apHeader()+body;
-    const btnModel=document.getElementById('btn-gen-model');
-    if(btnModel) btnModel.addEventListener('click',()=>mariaGenereazaModel(text, btnModel));
 
   } catch(err){
     console.error('Maria error:', err);
     const isFetch = String(err).includes('fetch') || String(err).includes('network') || String(err).includes('Failed');
     const msg = isFetch
-      ? 'Conexiune refuzată. Introduceți cheia Google AI Studio în panoul de configurare de mai sus.'
+      ? 'Serviciul de corectare nu este disponibil. Anunță profesorul.'
       : (err.message||String(err));
     panel.innerHTML=apHeader()+'<div class="ap-body"><div class="ap-eroare">⚠ Maria nu a putut răspunde.<br><br>'+esc(msg)+'</div></div>';
   } finally {
@@ -1474,101 +1425,55 @@ document.querySelectorAll('.btn-ajuta').forEach(btn=>{
   btn.addEventListener('click',function(){mariaAjuta(this)});
 });
 
-/* ══════════════════════════════════════════════
-   MARIA — GENERARE MODEL DE ESEU
-   Apare doar după corectura lingvistică la III.
-   Maria citește textul elevului, identifică
-   textele alese și generează un eseu model
-   adaptat exact pe acele texte și temă.
-══════════════════════════════════════════════ */
 
-const MARIA_MODEL_PROMPT =
-  'Ești Maria, profesoară de limba și literatura română, specializată în RLNM pentru elevi maghiari B1+.\n\n' +
-  'Ai citit eseul elevului. Acum generezi un MODEL DE ESEU complet pe aceeași temă BAC, folosind EXACT ACELEAȘI texte pe care le-a ales elevul (pe care le identifici din eseul lui).\n\n' +
-  'Modelul arată cum arată un eseu de nota 8-9, corect structurat, cu toate elementele din barem. Nu e un eseu perfect academic — e un model realist pentru un elev de liceu, nivel B1+.\n\n' +
-  'STRUCTURA OBLIGATORIE — exact 6 elemente, marcate clar:\n' +
-  'INTRODUCERE: definești tema și anunți textele alese (3-4 propoziții)\n' +
-  'TEXT 1: element de teorie literară (specie/gen/curent) + scenă semnificativă + cum reflectă tema\n' +
-  'TEXT 2: tip de text sau discurs + secvență semnificativă + cum reflectă tema\n' +
-  'COMPARAȚIE: o ASEMĂNARE și o DEOSEBIRE între cele două texte în reflectarea temei\n' +
-  'VALORIFICAREA EXPERIENȚEI CULTURALE: raportezi tema la experiența culturală mai largă — alte lecturi, filme, muzică, evenimente istorice sau personale care se leagă de temă (element distinct, 4 puncte în barem, NU inclus în încheiere)\n' +
-  'ÎNCHEIERE: concluzie care reia tema și importanța ei (3-4 propoziții)\n\n' +
-  'REGULI:\n' +
-  '- Minimum 350 de cuvinte\n' +
-  '- Română literară corectă, accesibilă pentru B1+\n' +
-  '- Dacă nu poți identifica textele din eseul elevului, folosești: Eminescu (Luceafarul) + fragmentul din Ileana Vulpescu (Pe apa Sambetei)\n' +
-  '- NU JSON — răspunzi cu textul eseului direct, cu secțiunile marcate clar\n' +
-  '- Adresare: nicio adresare directă către elev în eseu\n' +
-  '- La final adaugi o linie separată: MODEL GENERAT DE MARIA-PEDAGOG';
-
-async function mariaGenereazaModel(textElev, btn){
-  const rezultat = document.getElementById('model-eseu-rezultat');
-  if(!rezultat) return;
-
-  const orig = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Maria scrie modelul…';
-  rezultat.innerHTML = '<div class="model-loading"><div class="ap-spinner"></div>Maria redactează eseul model — poate dura 15-20 de secunde…</div>';
-
+/* Reia antrenamentul pe acelasi dispozitiv; salvare numai cu acordul elevului. */
+(function(){
+ const storageKey='maria-bac-model-1-progres-v1';
+ const toggle=document.getElementById('maria-save-enabled');
+ const clear=document.getElementById('maria-save-clear');
+ const info=document.getElementById('maria-save-status');
+ const fields=()=>Array.from(document.querySelectorAll('input,textarea,select'))
+   .filter(e=>e!==toggle&&!['button','submit','password','hidden'].includes(e.type));
+ function save(){
+  if(!toggle.checked)return;
   try{
-    const GEMMA_MODEL = 'gemma-4-26b-a4b-it';
-    const apiKey = ANTHROPIC_API_KEY;
-    
-    const endpoint = '/api/chat';
-
-    let resp, tentativa = 0;
-    while(tentativa < 2){
-      resp = await fetch(endpoint,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          system_instruction:{parts:[{text: MARIA_MODEL_PROMPT}]},
-          contents:[{role:'user', parts:[{text:'Eseul elevului:\n\n'+textElev}]}],
-          generationConfig:{maxOutputTokens:2000, temperature:0.7}
-        })
-      });
-      if(resp.ok || resp.status < 500) break;
-      tentativa++;
-      await new Promise(r=>setTimeout(r, 1500 * tentativa));
-    }
-
-    const data = await resp.json();
-    if(data.error) throw new Error(data.error.message||'Eroare API Google');
-    const parts2 = data.candidates?.[0]?.content?.parts||[];
-    const eseuModel = parts2.filter(p=>!p.thought).map(p=>p.text||'').join('').trim();
-
-    /* formatăm textul: marcajele de secțiune devin headere vizuale */
-    const formatat = eseuModel
-      .split('\n')
-      .map(linie => {
-        const l = linie.trim();
-        if(!l) return '<br>';
-        if(l.startsWith('INTRODUCERE') || l.startsWith('CUPRINS') || l.startsWith('ÎNCHEIERE') || l.startsWith('MODEL GENERAT'))
-          return '<div class="model-sectiune-titlu">'+esc(l)+'</div>';
-        return '<p class="model-paragraf">'+esc(l)+'</p>';
-      })
-      .join('');
-
-    rezultat.innerHTML =
-      '<div class="model-eseu-container">'+
-        '<div class="model-eseu-header">'+
-          '<span class="model-eseu-badge">Model de eseu — Maria-pedagog</span>'+
-          '<span class="model-eseu-nota">referință · nota 8–9</span>'+
-        '</div>'+
-        '<div class="model-eseu-text">'+formatat+'</div>'+
-        '<p class="model-eseu-nota-final">Compară cu eseul tău — observă structura, conectorii și modul în care tema este ilustrată în fiecare text.</p>'+
-      '</div>';
-
-    btn.innerHTML = '🔄 Regenerează modelul';
-    btn.disabled = false;
-
-  } catch(err){
-    console.error('Model eseu error:', err);
-    rezultat.innerHTML = '<div class="ap-eroare">⚠ Nu am putut genera modelul. Încearcă din nou.<br><small>'+esc(String(err))+'</small></div>';
-    btn.innerHTML = orig;
-    btn.disabled = false;
+   const records=fields().map(e=>({id:e.id||'',name:e.name||'',type:e.type||e.tagName,value:e.value,checked:!!e.checked}));
+   localStorage.setItem(storageKey,JSON.stringify({version:1,records}));
+   info.textContent='Progresul este păstrat doar pe acest dispozitiv.';
+  }catch(err){toggle.checked=false;info.textContent='Salvarea locală nu este disponibilă.';}
+ }
+ try{
+  const saved=JSON.parse(localStorage.getItem(storageKey)||'null'),current=fields();
+  if(saved?.version===1&&Array.isArray(saved.records)){
+   if(saved.records.length===current.length&&saved.records.every((r,i)=>r.id===(current[i].id||'')&&r.name===(current[i].name||'')&&r.type===(current[i].type||current[i].tagName))){
+    current.forEach((e,i)=>{const r=saved.records[i];if(e.type==='radio'||e.type==='checkbox')e.checked=!!r.checked;else e.value=r.value??'';});
+    toggle.checked=true;
+    current.filter(e=>e.tagName==='TEXTAREA').forEach(e=>e.dispatchEvent(new Event('input',{bubbles:true})));
+    recalc();
+    /* Dacă elevul răspunsese deja la Subiectul I, refacem automat punctajul. */
+    const areSubiectI=current.some(e=>/^(i1|i2[a-d]|i3-\d|i4-\d)$/.test(e.name)&&(e.type==='radio'?e.checked:e.value.trim()!==''));
+    if(areSubiectI) document.getElementById('btn-verifica-i').click();
+    info.textContent='Progresul a fost recuperat'+(areSubiectI?', iar punctajul Subiectului I a fost recalculat.':'.');
+   }else info.textContent='Progres vechi incompatibil; îl poți șterge.';
   }
-}
+ }catch(err){info.textContent='Progresul local nu poate fi citit.';}
+ toggle.addEventListener('change',()=>{
+  if(toggle.checked){
+   if(!confirm('Salvezi răspunsurile în acest browser? Nu activa pe un calculator comun.')){toggle.checked=false;return;}
+   save();
+  }else{
+   try{localStorage.removeItem(storageKey);}catch(err){}
+   info.textContent='Salvarea este dezactivată; progresul păstrat a fost șters.';
+  }
+ });
+ clear.addEventListener('click',()=>{
+  if(!confirm('Ștergi progresul local? Răspunsurile afișate rămân până reîncarci pagina.'))return;
+  try{localStorage.removeItem(storageKey);}catch(err){}
+  toggle.checked=false;info.textContent='Progresul salvat a fost șters.';
+ });
+ document.addEventListener('input',e=>{if(toggle.checked&&fields().includes(e.target))save();});
+ document.addEventListener('change',e=>{if(toggle.checked&&fields().includes(e.target))save();});
+})();
 
 })();
 </script>
