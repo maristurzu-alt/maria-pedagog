@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   const key = process.env.GOOGLE_API_KEY;
-  const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
   if (req.method === 'GET') {
     return res.status(200).json({configured: Boolean(key), model, mode: 'bac-l2-feedback'});
   }
