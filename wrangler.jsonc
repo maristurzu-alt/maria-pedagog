@@ -1,0 +1,14 @@
+{
+  "name": "maria-pedagog",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "GEMINI_MODEL": "gemini-2.5-flash"
+  }
+  // Cheia GOOGLE_API_KEY se adaugă ca „Secret” în contul Cloudflare,
+  // niciodată în acest fișier.
+}
