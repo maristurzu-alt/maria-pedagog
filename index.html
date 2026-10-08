@@ -681,6 +681,12 @@ textarea.argumentativ{min-height:190px}
 <span class="api-status-dot" id="api-dot"></span><strong>Maria-Pedagog · antrenament BAC</strong>
 <span id="api-status-text">Verific disponibilitatea corectării AI...</span></div></div>
 
+<div class="api-config" style="padding:14px;margin:12px 0" aria-label="Salvare progres">
+ <strong>Progresul antrenamentului</strong>
+ <label style="display:block;margin:7px 0;font-size:14px"><input type="checkbox" id="maria-save-enabled"> Păstrează răspunsurile pe acest dispozitiv</label>
+ <button type="button" id="maria-save-clear" style="padding:6px 12px">Șterge progresul salvat</button>
+ <p id="maria-save-status" aria-live="polite" style="font-size:12px;margin:6px 0">Salvarea este dezactivată. Nu o activa pe un calculator comun.</p>
+</div>
 <!-- TAB NAV -->
 <div class="tabs" role="tablist">
   <button class="tab-btn active" data-tab="t1">Subiectul I<span class="puncte">30 puncte</span></button>
@@ -1412,6 +1418,52 @@ document.querySelectorAll('.btn-ajuta').forEach(btn=>{
   btn.addEventListener('click',function(){mariaAjuta(this)});
 });
 
+
+/* Reia antrenamentul pe acelasi dispozitiv; salvare numai cu acordul elevului. */
+(function(){
+ const storageKey='maria-bac-model-1-progres-v1';
+ const toggle=document.getElementById('maria-save-enabled');
+ const clear=document.getElementById('maria-save-clear');
+ const info=document.getElementById('maria-save-status');
+ const fields=()=>Array.from(document.querySelectorAll('input,textarea,select'))
+   .filter(e=>e!==toggle&&!['button','submit','password','hidden'].includes(e.type));
+ function save(){
+  if(!toggle.checked)return;
+  try{
+   const records=fields().map(e=>({id:e.id||'',name:e.name||'',type:e.type||e.tagName,value:e.value,checked:!!e.checked}));
+   localStorage.setItem(storageKey,JSON.stringify({version:1,records}));
+   info.textContent='Progresul este păstrat doar pe acest dispozitiv.';
+  }catch(err){toggle.checked=false;info.textContent='Salvarea locală nu este disponibilă.';}
+ }
+ try{
+  const saved=JSON.parse(localStorage.getItem(storageKey)||'null'),current=fields();
+  if(saved?.version===1&&Array.isArray(saved.records)){
+   if(saved.records.length===current.length&&saved.records.every((r,i)=>r.id===(current[i].id||'')&&r.name===(current[i].name||'')&&r.type===(current[i].type||current[i].tagName))){
+    current.forEach((e,i)=>{const r=saved.records[i];if(e.type==='radio'||e.type==='checkbox')e.checked=!!r.checked;else e.value=r.value??'';});
+    toggle.checked=true;
+    current.filter(e=>e.tagName==='TEXTAREA').forEach(e=>e.dispatchEvent(new Event('input',{bubbles:true})));
+    recalc();
+    info.textContent='Progresul a fost recuperat. Reapasă „Verifică Subiectul I” pentru actualizarea punctajului.';
+   }else info.textContent='Progres vechi incompatibil; îl poți șterge.';
+  }
+ }catch(err){info.textContent='Progresul local nu poate fi citit.';}
+ toggle.addEventListener('change',()=>{
+  if(toggle.checked){
+   if(!confirm('Salvezi răspunsurile în acest browser? Nu activa pe un calculator comun.')){toggle.checked=false;return;}
+   save();
+  }else{
+   try{localStorage.removeItem(storageKey);}catch(err){}
+   info.textContent='Salvarea este dezactivată; progresul păstrat a fost șters.';
+  }
+ });
+ clear.addEventListener('click',()=>{
+  if(!confirm('Ștergi progresul local? Răspunsurile afișate rămân până reîncarci pagina.'))return;
+  try{localStorage.removeItem(storageKey);}catch(err){}
+  toggle.checked=false;info.textContent='Progresul salvat a fost șters.';
+ });
+ document.addEventListener('input',e=>{if(toggle.checked&&fields().includes(e.target))save();});
+ document.addEventListener('change',e=>{if(toggle.checked&&fields().includes(e.target))save();});
+})();
 
 })();
 </script>
